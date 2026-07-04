@@ -38,7 +38,7 @@ pnpm dev                     # run web + api in parallel
 ```
 
 - Web app: http://localhost:4321
-- API: http://localhost:3000/health
+- API: http://localhost:3001/health
 
 ## Phased roadmap
 
