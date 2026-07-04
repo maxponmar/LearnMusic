@@ -33,7 +33,7 @@ learning-records/   decision-grade insights from sessions
 
 ```bash
 pnpm install                 # install all workspaces
-pnpm db:generate && pnpm db:migrate   # create the SQLite schema
+pnpm db:migrate              # create the SQLite schema
 pnpm dev                     # run web + api in parallel
 ```
 
