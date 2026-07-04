@@ -20,6 +20,13 @@
 export const LETTERS = ["C", "D", "E", "F", "G", "A", "B"] as const;
 export type Letter = (typeof LETTERS)[number];
 
+/**
+ * The 12 major keys in their conventional guitar spellings, ordered from the
+ * open-shape keys outward. The canonical list for key-selector UIs — subsets
+ * are fine, parallel hand-written lists are not.
+ */
+export const ALL_KEYS = ["C", "G", "D", "A", "E", "B", "F#", "Db", "Ab", "Eb", "Bb", "F"] as const;
+
 export type Accidental = "" | "#" | "b";
 
 export interface SpelledNote {

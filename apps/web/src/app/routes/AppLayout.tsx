@@ -8,6 +8,7 @@ import { NavLink, Outlet } from "react-router-dom";
 const navItems = [
   { to: "/app", label: "Home", end: true },
   { to: "/app/lessons", label: "Lessons" },
+  { to: "/app/songs", label: "Songs" },
   { to: "/app/ear-training", label: "Ear" },
   { to: "/app/fretboard", label: "Fretboard" },
   { to: "/app/journal", label: "Journal" },

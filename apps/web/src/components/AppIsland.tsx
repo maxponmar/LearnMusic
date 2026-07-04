@@ -16,6 +16,8 @@ import { AppLayout } from "../app/routes/AppLayout";
 import { AppHome } from "../app/routes/AppHome";
 import { LessonsList } from "../app/routes/LessonsList";
 import { LessonReader } from "../app/routes/LessonReader";
+import { SongsList } from "../app/routes/SongsList";
+import { SongChart } from "../app/routes/SongChart";
 import { Journal } from "../app/routes/Journal";
 import { FretboardLab } from "../app/routes/FretboardLab";
 import { EarTrainer } from "../app/routes/EarTrainer";
@@ -28,6 +30,8 @@ export default function AppIsland() {
           <Route index path="/app" element={<AppHome />} />
           <Route path="/app/lessons" element={<LessonsList />} />
           <Route path="/app/lessons/:id" element={<LessonReader />} />
+          <Route path="/app/songs" element={<SongsList />} />
+          <Route path="/app/songs/:slug" element={<SongChart />} />
           <Route path="/app/ear-training" element={<EarTrainer />} />
           <Route path="/app/journal" element={<Journal />} />
           <Route path="/app/fretboard" element={<FretboardLab />} />

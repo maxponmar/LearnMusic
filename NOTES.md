@@ -6,8 +6,10 @@
   memory. Has *not* studied theory or scales.
 - Wants to break out of "I only know the songs I've memorized" — play by ear
   and improvise.
-- Repertoire context: contemporary worship (Hillsong, Bethel, Elevation,
-  Chris Tomlin, Phil Wickham). Keys G/D/C/A, heavy capo use.
+- Repertoire context: contemporary worship, **bilingual** (English + Spanish).
+  Church sings: Hillsong, Elevation Worship, Marcos Brunet, Enoc Parra,
+  Marcos Witt, Marco Barrientos, Eccos, Un Corazón. Keys G/D/C/A, heavy capo
+  use.
 
 ## Teaching preferences
 - (none yet recorded — update as the learner expresses them.)
@@ -24,6 +26,8 @@
   `@tombatossals/chords-db` (data only). No VexFlow.
 
 ## Open questions for the learner
-- What does your church actually sing? (Specific songs help ground lessons.)
+- ~~What does your church actually sing?~~ Answered (artists above). Still
+  open: which *specific songs* per artist — especially for the Spanish-language
+  artists, so their charts can be added to the song library.
 - Do you have a capo and are you comfortable using it?
 - Any worship guitarist/teacher whose style you particularly want to emulate?

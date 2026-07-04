@@ -12,6 +12,7 @@
  *  - `fretboard` — pure geometry of the standard-tuned 6-string guitar
  *  - `nns`       — Nashville Number System + common worship progressions
  *  - `scales`    — pentatonic scales for improvisation
+ *  - `capo`      — open-shape + capo-fret suggestion for any key
  */
 
 export * from "./notes.js";
@@ -20,3 +21,4 @@ export * from "./fretboard.js";
 export * from "./nns.js";
 export * from "./scales.js";
 export * from "./context.js";
+export * from "./capo.js";

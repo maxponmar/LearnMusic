@@ -11,8 +11,9 @@ build/
 # data
 *.sqlite
 *.sqlite-journal
-data/
-apps/api/data/
+*.sqlite-shm
+*.sqlite-wal
+apps/api/src/data/
 
 # env / secrets
 .env

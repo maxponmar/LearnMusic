@@ -96,6 +96,39 @@ export const WORSHIP_PROGRESSIONS: Progression[] = [
   },
 ];
 
+/**
+ * Parse a single Nashville Number System token (e.g. "1", "6m", "2m", "7dim")
+ * into a concrete chord name within a key.
+ *
+ * Two token vocabularies exist in this module and both are accepted here:
+ * - display symbols, as produced by `nashvilleChords` and used in
+ *   `WORSHIP_PROGRESSIONS` ("6-", "7°" — dash = minor, ° = diminished)
+ * - chart-authoring tokens, as used in song chart data ("6m", "7dim")
+ *
+ * Unlike `nashvilleChords`/`renderProgression`, the chord quality comes from
+ * the token itself rather than the diatonic default — this keeps song charts
+ * self-documenting (a chart can say "6m" without the reader needing to derive
+ * that vi is minor) and leaves room for borrowed/non-diatonic chords later.
+ */
+const TOKEN_SUFFIXES: Record<string, string> = {
+  m: "m",
+  "-": "m",
+  dim: "dim",
+  "°": "dim",
+  "+": "aug",
+  aug: "aug",
+};
+
+export function chordForToken(token: string, tonic: string, quality: ScaleQuality = "major"): string {
+  const match = /^([1-7])(m|-|dim|°|\+|aug)?$/.exec(token.trim());
+  if (!match) throw new Error(`Bad NNS token: "${token}"`);
+  const degree = parseInt(match[1]!, 10);
+  const suffix = match[2] ? TOKEN_SUFFIXES[match[2]]! : "";
+  const k: Key = key(tonic, quality);
+  const root = k.degrees[degree - 1]!;
+  return `${spell(root)}${suffix}`;
+}
+
 /** Render a progression in a specific key — returns concrete chord names. */
 export function renderProgression(prog: Progression, tonic: string, quality: ScaleQuality = "major"): string[] {
   const chords = nashvilleChords(tonic, quality);

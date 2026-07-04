@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   nashvilleChords,
   renderProgression,
+  chordForToken,
   WORSHIP_PROGRESSIONS,
 } from "./nns.js";
 import { pentatonicPcs, relativePentatonic, majorScaleToPentatonicDegrees } from "./scales.js";
@@ -32,6 +33,38 @@ describe("NNS — Nashville Number System", () => {
   it("renders 1-4-5 in G", () => {
     const prog = WORSHIP_PROGRESSIONS.find((p) => p.name === "1–4–5")!;
     expect(renderProgression(prog, "G")).toEqual(["G", "C", "D"]);
+  });
+});
+
+describe("chordForToken — song-chart NNS token to chord name", () => {
+  it("renders bare-number (major) tokens", () => {
+    expect(chordForToken("1", "G")).toBe("G");
+    expect(chordForToken("4", "G")).toBe("C");
+    expect(chordForToken("5", "D")).toBe("A");
+  });
+
+  it("renders minor tokens (trailing 'm')", () => {
+    expect(chordForToken("6m", "D")).toBe("Bm");
+    expect(chordForToken("2m", "C")).toBe("Dm");
+    expect(chordForToken("6m", "G")).toBe("Em");
+  });
+
+  it("spells correctly for sharp keys (never uses flats)", () => {
+    expect(chordForToken("6m", "A")).toBe("F#m");
+  });
+
+  it("renders diminished tokens", () => {
+    expect(chordForToken("7dim", "C")).toBe("Bdim");
+  });
+
+  it("accepts display-symbol tokens from nashvilleChords/WORSHIP_PROGRESSIONS", () => {
+    expect(chordForToken("6-", "G")).toBe("Em");
+    expect(chordForToken("7°", "C")).toBe("Bdim");
+  });
+
+  it("throws on a malformed token", () => {
+    expect(() => chordForToken("x", "G")).toThrow();
+    expect(() => chordForToken("8", "G")).toThrow();
   });
 });
 

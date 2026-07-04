@@ -7,6 +7,7 @@
 // To add a new top-level app route, append its slug to the array below.
 import Base from "../../layouts/Base.astro";
 import AppIsland from "../../components/AppIsland.tsx";
+import { SONG_CHARTS } from "../../app/data/charts";
 
 export function getStaticPaths() {
   return [
@@ -15,6 +16,9 @@ export function getStaticPaths() {
     { params: { slug: "fretboard" } },
     { params: { slug: "ear-training" } },
     { params: { slug: "journal" } },
+    { params: { slug: "songs" } },
+    // Known song-chart deep-links (added as charts are seeded)
+    ...SONG_CHARTS.map((chart) => ({ params: { slug: `songs/${chart.slug}` } })),
     // Known lesson deep-links (added as lessons are written)
     { params: { slug: "lessons/0001-name-any-note" } },
     { params: { slug: "lessons/0002-intervals" } },
