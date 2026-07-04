@@ -1,0 +1,73 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base>
+  <main class="max-w-5xl mx-auto px-6 py-12 md:py-20">
+    <header class="text-center mb-16">
+      <p class="text-sm uppercase tracking-[0.2em] text-[var(--color-muted)] mb-4">
+        Play skillfully · Psalm 33:3
+      </p>
+      <h1 class="font-serif text-5xl md:text-6xl tracking-tight mb-6">
+        Learn worship guitar
+        <span class="block text-[var(--color-accent)]">by ear, not by memory.</span>
+      </h1>
+      <p class="text-lg md:text-xl text-[var(--color-muted)] max-w-2xl mx-auto leading-relaxed">
+        You already know the chords. This is the theory, the ear, and the
+        improvisation that lets you hear a song and play it — to serve the song
+        and the worship, not depend on a chart.
+      </p>
+      <div class="mt-10 flex gap-4 justify-center">
+        <a
+          href="/app"
+          class="px-6 py-3 rounded-md bg-[var(--color-accent)] text-white font-medium hover:opacity-90 transition"
+        >
+          Open the app →
+        </a>
+        <a
+          href="/app/lessons"
+          class="px-6 py-3 rounded-md border border-[var(--color-accent-soft)] text-[var(--color-accent)] font-medium hover:bg-[var(--color-accent-soft)]/10 transition"
+        >
+          Browse lessons
+        </a>
+      </div>
+    </header>
+
+    <section class="grid md:grid-cols-3 gap-6 mt-16">
+      <div class="p-6 rounded-lg border border-[var(--color-accent-soft)]/40 bg-white/40">
+        <div class="text-2xl mb-2">🎯</div>
+        <h3 class="font-serif text-xl mb-2">Hear it → play it</h3>
+        <p class="text-sm text-[var(--color-muted)] leading-relaxed">
+          Functional ear training on scale degrees, plus the Nashville Number
+          System, so any worship progression becomes a pattern you recognize.
+        </p>
+      </div>
+      <div class="p-6 rounded-lg border border-[var(--color-accent-soft)]/40 bg-white/40">
+        <div class="text-2xl mb-2">🎸</div>
+        <h3 class="font-serif text-xl mb-2">The whole fretboard</h3>
+        <p class="text-sm text-[var(--color-muted)] leading-relaxed">
+          Landmarks, octave shapes, diatonic chords, pentatonic positions —
+          rendered on an interactive SVG fretboard tied to every lesson.
+        </p>
+      </div>
+      <div class="p-6 rounded-lg border border-[var(--color-accent-soft)]/40 bg-white/40">
+        <div class="text-2xl mb-2">✨</div>
+        <h3 class="font-serif text-xl mb-2">Improvise tastefully</h3>
+        <p class="text-sm text-[var(--color-muted)] leading-relaxed">
+          Major and minor pentatonic, "follow the chord," motifs and space —
+          fills that serve the vocal instead of competing with it.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-20 text-center text-sm text-[var(--color-muted)]">
+      <p>
+        Built for one learner. Grounded in
+        <a href="https://www.musictheory.net/lessons" target="_blank" rel="noopener" class="underline">musictheory.net</a>,
+        <a href="https://www.justinguitar.com/" target="_blank" rel="noopener" class="underline">JustinGuitar</a>,
+        and the
+        <a href="https://digitalcollections.lipscomb.edu/cgi/viewcontent.cgi?article=1199&context=jmtp" target="_blank" rel="noopener" class="underline">Nashville Number System</a>.
+      </p>
+    </section>
+  </main>
+</Base>

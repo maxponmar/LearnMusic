@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference — Notes on the fretboard</title>
+<style>
+  :root {
+    --bg: #faf7f2; --ink: #1f1b16; --muted: #6b5e51;
+    --accent: #7c5a3d; --accent-soft: #c9a98a; --line: #d8c9b6;
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font-family: var(--sans); line-height: 1.6; padding: 2rem 1rem 5rem; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1, h2, h3 { font-family: var(--serif); letter-spacing: -0.01em; line-height: 1.2; }
+  h1 { font-size: 2rem; margin: 0 0 .4rem; }
+  h2 { font-size: 1.4rem; margin: 2rem 0 .6rem; }
+  h3 { font-size: 1.1rem; margin: 1.4rem 0 .4rem; }
+  p, li { font-size: 1rem; }
+  .subtitle { color: var(--muted); margin: 0 0 2rem; font-size: .95rem; }
+  code { background: #efe7da; padding: .1em .35em; border-radius: .25em;
+         font-family: var(--mono); font-size: .92em; }
+  blockquote { border-left: 3px solid var(--accent-soft); padding-left: 1rem;
+               color: var(--muted); font-style: italic; margin: 1rem 0; }
+  table.fret { border-collapse: collapse; width: 100%; margin: 1rem 0;
+               font-family: var(--mono); font-size: .9rem; }
+  table.fret th, table.fret td { border: 1px solid var(--line); padding: .5rem;
+                                 text-align: center; }
+  table.fret th { background: #f0e6d6; font-weight: 600; }
+  table.fret td.string { background: #f7efe0; font-weight: 700;
+                         color: var(--accent); }
+  .root { background: var(--accent) !important; color: #fff !important;
+          font-weight: 700; }
+  .landmark { background: var(--accent-soft) !important; color: #fff !important; }
+  .legend { font-size: .85rem; color: var(--muted); margin-top: .5rem; }
+  .legend span { display: inline-block; margin-right: 1rem; }
+  .legend i { display: inline-block; width: .9rem; height: .9rem;
+              border-radius: 50%; vertical-align: middle; margin-right: .3rem; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  @media (max-width: 600px) { .grid2 { grid-template-columns: 1fr; } }
+  .callout { background: #f3ead8; border: 1px solid var(--accent-soft);
+             border-radius: .5rem; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+  .verse { color: var(--muted); font-style: italic; font-size: .9rem;
+           margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+  a { color: var(--accent); }
+  .print { float: right; font-size: .85rem; color: var(--muted);
+           text-decoration: none; border: 1px solid var(--line);
+           padding: .3rem .8rem; border-radius: .3rem; }
+  @media print { .print { display: none; } body { padding: 0; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="print" href="#" onclick="window.print();return false;">Print</a>
+  <h1>Notes on the fretboard</h1>
+  <p class="subtitle">Reference · Module 0 — fretboard landmarks</p>
+
+  <p>
+    The neck has 12 semitones per string, repeating at the 12th fret. Every
+    note you need is reachable through <strong>three landmarks</strong> plus
+    <strong>three octave shapes</strong>. Memorize those, not 130 individual
+    fret positions.
+  </p>
+
+  <h2>1. Standard tuning</h2>
+  <p>
+    Strings are numbered 1–6 from the thinnest (high E) to the thickest (low E),
+    the way chord diagrams read top-to-bottom:
+  </p>
+  <table class="fret">
+    <tr>
+      <th>string</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+    </tr>
+    <tr>
+      <td class="string">open note</td>
+      <td>E4</td><td>B3</td><td>G3</td><td>D3</td><td>A2</td><td>E2</td>
+    </tr>
+    <tr>
+      <td class="string">MIDI</td>
+      <td>64</td><td>59</td><td>55</td><td>50</td><td>45</td><td>40</td>
+    </tr>
+  </table>
+  <p class="legend">
+    Mnemonic (high → low): <em>Every Boy Goes Down An Elevator.</em>
+  </p>
+
+  <h2>2. The two string-landmarks</h2>
+  <p>
+    Learn the natural notes on the <strong>low E (6th)</strong> and
+    <strong>A (5th)</strong> strings first. Every barre chord you already know
+    roots on one of these — the names are already under your fingers, you just
+    haven't named them.
+  </p>
+
+  <table class="fret">
+    <tr>
+      <th>fret</th><th>0</th><th>1</th><th>3</th><th>5</th><th>7</th><th>9</th><th>10</th><th>12</th>
+    </tr>
+    <tr>
+      <td class="string">6 (low E)</td>
+      <td class="root">E</td><td>F</td><td>G</td><td class="landmark">A</td><td class="landmark">B</td><td>C#</td><td>D</td><td class="root">E</td>
+    </tr>
+    <tr>
+      <td class="string">5 (A)</td>
+      <td class="root">A</td><td>Bb</td><td>C</td><td class="landmark">D</td><td class="landmark">E</td><td>F#</td><td>G</td><td class="root">A</td>
+    </tr>
+  </table>
+  <p class="legend">
+    <span><i style="background:var(--accent)"></i>open / octave</span>
+    <span><i style="background:var(--accent-soft)"></i>5th &amp; 7th-fret landmarks</span>
+  </p>
+
+  <div class="callout">
+    <strong>Two anchors unlock everything.</strong> The 5th-fret note on a
+    string = the next open string (5th fret low E = A; 5th fret A = D; etc.).
+    The 7th-fret note = the next open string, one octave higher. That's the
+    "5th-fret tuning trick" — and it's also how you'll project notes everywhere.
+  </div>
+
+  <h2>3. Octave shapes — project any note across the neck</h2>
+  <p>
+    A note's octave lives at a fixed string/fret offset, depending on the
+    string pair. Three shapes cover everything:
+  </p>
+
+  <div class="grid2">
+    <div>
+      <h3>Shape A — same-string + 12</h3>
+      <p>Any note's octave is <strong>12 frets up the same string</strong>.</p>
+      <p><code>low E, fret 3 (G) → low E, fret 15 (G, octave up)</code></p>
+    </div>
+    <div>
+      <h3>Shape B — skip a string, up 2 frets (strings 6/5 → 4/3)</h3>
+      <p>From string 6 or 5, the octave is two strings "in" and 2 frets up.</p>
+      <p><code>low E fret 1 (F) → D string fret 3 (F, octave up)</code></p>
+    </div>
+  </div>
+
+  <h3>Shape C — skip a string, up 3 frets (to strings 2 or 1)</h3>
+  <p>
+    The B string (string 2) breaks the pattern: it's tuned a major-3rd above
+    G (string 3), not a perfect-4th like all the others. So octaves onto
+    string 2 or 1 jump <strong>3 frets</strong> instead of 2.
+  </p>
+  <p><code>G string fret 5 (C) → high E string fret 8 (C, octave up)</code></p>
+
+  <blockquote>
+    The B-string offset is the single thing that makes the guitar feel
+    irregular. Internalize "onto string 2 or 1 = +3, anywhere else = +2" and
+    the neck stops feeling random.
+  </blockquote>
+
+  <h2>4. The 12th fret = open strings</h2>
+  <p>
+    The neck <em>repeats</em> at fret 12. Every open-string shape you know has
+    an identical shape at the 12th fret, one octave up. The guitar is a
+    12-fret instrument that's just been copied twice.
+  </p>
+
+  <h2>5. Drill — name any note in 2 seconds</h2>
+  <p>Do this daily for one week:</p>
+  <ol>
+    <li>Pick a random note (e.g. "G").</li>
+    <li>Find it on the low E string (landmark).</li>
+    <li>Use octave shapes to find every other G on the neck.</li>
+    <li>Name the note one fret up and one fret down from each — that's the
+        sharp/flat neighbor.</li>
+  </ol>
+  <p>
+    The interactive fretboard at <code>/app/fretboard</code> will show every
+    position of any note in any key (Phase 2). Until then, this table and your
+    guitar are the lab.
+  </p>
+
+  <p class="verse">
+    "Sing to him a new song; play skillfully, and shout for joy." — Psalm 33:3
+  </p>
+</div>
+</body>
+</html>

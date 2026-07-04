@@ -1,0 +1,31 @@
+{
+  "name": "@lag/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Express + TypeScript + Drizzle + SQLite backend for the worship-guitar learning app.",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "db:migrate": "tsx src/db/migrate.ts"
+  },
+  "dependencies": {
+    "@lag/shared": "workspace:*",
+    "@lag/theory": "workspace:*",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

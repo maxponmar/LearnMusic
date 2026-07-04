@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference — Diatonic chords & the Nashville Number System</title>
+<style>
+  :root {
+    --bg: #faf7f2; --ink: #1f1b16; --muted: #6b5e51;
+    --accent: #7c5a3d; --accent-soft: #c9a98a; --line: #d8c9b6;
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font-family: ui-sans-serif,system-ui,sans-serif; line-height: 1.6; padding: 2rem 1rem 5rem; }
+  .wrap { max-width: 820px; margin: 0 auto; }
+  h1, h2, h3 { font-family: var(--serif); letter-spacing: -0.01em; line-height: 1.2; }
+  h1 { font-size: 2rem; margin: 0 0 .4rem; }
+  h2 { font-size: 1.4rem; margin: 2rem 0 .6rem; color: var(--accent); }
+  .subtitle { color: var(--muted); margin: 0 0 2rem; font-size: .95rem; }
+  code { background: #efe7da; padding: .1em .35em; border-radius: .25em; font-family: var(--mono); }
+  .callout { background: #f3ead8; border: 1px solid var(--accent-soft); border-radius: .5rem;
+             padding: 1rem 1.2rem; margin: 1.2rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0;
+          font-family: var(--mono); font-size: .9rem; }
+  th, td { border: 1px solid var(--line); padding: .5rem; text-align: left; }
+  th { background: #f0e6d6; }
+  .verse { color: var(--muted); font-style: italic; font-size: .9rem; margin-top: 2rem;
+           border-top: 1px solid var(--line); padding-top: 1rem; }
+  .print { float: right; font-size: .85rem; color: var(--muted); text-decoration: none;
+           border: 1px solid var(--line); padding: .3rem .8rem; border-radius: .3rem; }
+  @media print { .print { display: none; } body { padding: 0; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="print" href="#" onclick="window.print();return false;">Print</a>
+  <h1>Diatonic chords & the Nashville Number System</h1>
+  <p class="subtitle">Reference · Module 2 — the universal chord language of worship</p>
+
+  <h2>The 7 diatonic chords in any major key</h2>
+  <p>Pattern: <strong>Major · minor · minor · Major · Major · minor · diminished</strong></p>
+  <table>
+    <tr><th>number</th><th>roman</th><th>quality</th><th>in G</th><th>in D</th><th>in C</th><th>in A</th></tr>
+    <tr><td><strong>1</strong></td><td>I</td><td>major</td><td>G</td><td>D</td><td>C</td><td>A</td></tr>
+    <tr><td>2-</td><td>ii</td><td>minor</td><td>Am</td><td>Em</td><td>Dm</td><td>Bm</td></tr>
+    <tr><td>3-</td><td>iii</td><td>minor</td><td>Bm</td><td>F#m</td><td>Em</td><td>C#m</td></tr>
+    <tr><td><strong>4</strong></td><td>IV</td><td>major</td><td>C</td><td>G</td><td>F</td><td>D</td></tr>
+    <tr><td><strong>5</strong></td><td>V</td><td>major</td><td>D</td><td>A</td><td>G</td><td>E</td></tr>
+    <tr><td>6-</td><td>vi</td><td>minor</td><td>Em</td><td>Bm</td><td>Am</td><td>F#m</td></tr>
+    <tr><td>7°</td><td>vii°</td><td>diminished</td><td>F#dim</td><td>C#dim</td><td>Bdim</td><td>G#dim</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>The big four:</strong> 1, 4, 5, 6- carry ~90% of contemporary
+    worship. Learn those first; 2-, 3-, 7° come up rarely.
+  </div>
+
+  <h2>The five common worship progressions</h2>
+  <table>
+    <tr><th>pattern</th><th>in G</th><th>feel</th><th>examples</th></tr>
+    <tr><td><strong>1 – 5 – 6- – 4</strong></td><td>G D Em C</td>
+        <td>anthemic, hopeful</td><td>Forever Reign; Lord I Need You</td></tr>
+    <tr><td><strong>6- – 4 – 1 – 5</strong></td><td>Em C G D</td>
+        <td>cyclic, builds</td><td>Cornerstone; Amazing Grace (My Chains)</td></tr>
+    <tr><td><strong>1 – 4 – 5</strong></td><td>G C D</td>
+        <td>foundational, bright</td><td>10,000 Reasons; Open the Eyes</td></tr>
+    <tr><td><strong>1 – 6- – 4 – 5</strong></td><td>G Em C D</td>
+        <td>pop-worship, open</td><td>Revelation Song; Oceans bridge</td></tr>
+    <tr><td><strong>4 – 1 – 5</strong></td><td>C G D</td>
+        <td>plagal, restful</td><td>Good Good Father; Beautiful Name pre-chorus</td></tr>
+  </table>
+
+  <h2>Capo strategy — friendly shapes for any key</h2>
+  <p>Play open-position shapes (G/D/C/A family) and capo up to the actual key:</p>
+  <table>
+    <tr><th>actual key</th><th>play shapes in</th><th>capo fret</th><th>semitones</th></tr>
+    <tr><td>A</td><td>G</td><td>2</td><td>+2</td></tr>
+    <tr><td>Bb</td><td>G</td><td>3</td><td>+3</td></tr>
+    <tr><td>B</td><td>G</td><td>4</td><td>or A shapes, capo 2</td></tr>
+    <tr><td>Bb</td><td>A</td><td>1</td><td>+1</td></tr>
+    <tr><td>Eb</td><td>C</td><td>3</td><td>+3</td></tr>
+    <tr><td>Eb</td><td>D</td><td>1</td><td>+1</td></tr>
+    <tr><td>B</td><td>A</td><td>2</td><td>+2</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Capo math:</strong> capo fret = (target key) − (shapes key),
+    counted in semitones. G→Bb is 3 semitones up, so capo 3 with G shapes.
+  </div>
+
+  <h2>The "worship sus" coloring</h2>
+  <p>
+    Same number functions, fancier voicings — the actual sound of modern
+    worship. Don't change the analysis; just dress it up:
+  </p>
+  <table>
+    <tr><th>plain</th><th>worship voicing</th></tr>
+    <tr><td>D (the 5 in G)</td><td>Dsus4 / D2 / D(add9)</td></tr>
+    <tr><td>C (the 4 in G)</td><td>C2 / C(add9)</td></tr>
+    <tr><td>Em (the 6- in G)</td><td>Em7</td></tr>
+    <tr><td>G (the 1 in G)</td><td>G2 / G(add9) /Gsus</td></tr>
+  </table>
+
+  <p class="verse">"Sing to him a new song; play skillfully, and shout for joy." — Psalm 33:3</p>
+</div>
+</body>
+</html>

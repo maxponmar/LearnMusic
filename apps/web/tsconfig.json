@@ -1,0 +1,15 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "moduleResolution": "Bundler",
+    "verbatimModuleSyntax": false,
+    "module": "ESNext",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["astro/client"]
+  },
+  "include": ["src/**/*", ".astro/types.d.ts", "../env.d.ts"],
+  "exclude": ["dist"]
+}

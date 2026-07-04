@@ -1,0 +1,32 @@
+---
+// All /app/* routes mount the same React SPA island. We pre-render each known
+// route path explicitly so static output works on any host (no SSR adapter
+// needed). React Router handles in-app navigation; deep-linking to any of
+// these paths works because each has its own pre-rendered HTML file.
+//
+// To add a new top-level app route, append its slug to the array below.
+import Base from "../../layouts/Base.astro";
+import AppIsland from "../../components/AppIsland.tsx";
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: undefined } }, // → /app itself
+    { params: { slug: "lessons" } },
+    { params: { slug: "fretboard" } },
+    { params: { slug: "ear-training" } },
+    { params: { slug: "journal" } },
+    // Known lesson deep-links (added as lessons are written)
+    { params: { slug: "lessons/0001-name-any-note" } },
+    { params: { slug: "lessons/0002-intervals" } },
+    { params: { slug: "lessons/0003-major-scale" } },
+    { params: { slug: "lessons/0004-scale-degrees" } },
+    { params: { slug: "lessons/0005-diatonic-triads" } },
+    { params: { slug: "lessons/0006-nashville-number-system" } },
+    { params: { slug: "lessons/0007-worship-progressions" } },
+  ];
+}
+---
+
+<Base title="Worship Guitar — App">
+  <AppIsland client:only="react" />
+</Base>

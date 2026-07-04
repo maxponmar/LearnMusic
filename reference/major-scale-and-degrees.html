@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference — Intervals, the major scale & scale degrees</title>
+<style>
+  :root {
+    --bg: #faf7f2; --ink: #1f1b16; --muted: #6b5e51;
+    --accent: #7c5a3d; --accent-soft: #c9a98a; --line: #d8c9b6;
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans);
+         line-height: 1.6; padding: 2rem 1rem 5rem; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1, h2, h3 { font-family: var(--serif); letter-spacing: -0.01em; line-height: 1.2; }
+  h1 { font-size: 2rem; margin: 0 0 .4rem; }
+  h2 { font-size: 1.4rem; margin: 2rem 0 .6rem; }
+  h3 { font-size: 1.1rem; margin: 1.4rem 0 .4rem; }
+  .subtitle { color: var(--muted); margin: 0 0 2rem; font-size: .95rem; }
+  code { background: #efe7da; padding: .1em .35em; border-radius: .25em; font-family: var(--mono); font-size: .92em; }
+  .callout { background: #f3ead8; border: 1px solid var(--accent-soft); border-radius: .5rem;
+             padding: 1rem 1.2rem; margin: 1.2rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0;
+          font-family: var(--mono); font-size: .9rem; }
+  th, td { border: 1px solid var(--line); padding: .5rem; text-align: left; vertical-align: top; }
+  th { background: #f0e6d6; }
+  .verse { color: var(--muted); font-style: italic; font-size: .9rem; margin-top: 2rem;
+           border-top: 1px solid var(--line); padding-top: 1rem; }
+  .print { float: right; font-size: .85rem; color: var(--muted); text-decoration: none;
+           border: 1px solid var(--line); padding: .3rem .8rem; border-radius: .3rem; }
+  @media print { .print { display: none; } body { padding: 0; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="print" href="#" onclick="window.print();return false;">Print</a>
+  <h1>Intervals, the major scale & scale degrees</h1>
+  <p class="subtitle">Reference · Module 1 — the theory backbone</p>
+
+  <h2>Intervals (semitones from a root)</h2>
+  <table>
+    <tr><th>semitones</th><th>name</th><th>abrev.</th></tr>
+    <tr><td>0</td><td>unison</td><td>P1</td></tr>
+    <tr><td>1</td><td>minor 2nd</td><td>m2</td></tr>
+    <tr><td>2</td><td>major 2nd</td><td>M2</td></tr>
+    <tr><td>3</td><td>minor 3rd</td><td>m3</td></tr>
+    <tr><td>4</td><td>major 3rd</td><td>M3</td></tr>
+    <tr><td>5</td><td>perfect 4th</td><td>P4</td></tr>
+    <tr><td>6</td><td>tritone</td><td>°5/+4</td></tr>
+    <tr><td>7</td><td>perfect 5th</td><td>P5</td></tr>
+    <tr><td>8</td><td>minor 6th</td><td>m6</td></tr>
+    <tr><td>9</td><td>major 6th</td><td>M6</td></tr>
+    <tr><td>10</td><td>minor 7th</td><td>m7</td></tr>
+    <tr><td>11</td><td>major 7th</td><td>M7</td></tr>
+    <tr><td>12</td><td>octave</td><td>P8</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Interval = number of frets.</strong> A major 3rd is always 4
+    frets, anywhere on the neck. A perfect 5th is always 7 frets. Intervals
+    are moveable; they don't care what note you start from.
+  </div>
+
+  <h2>The major scale recipe</h2>
+  <p>From any starting note, walk:</p>
+  <p style="font-family: var(--mono); font-size: 1.4rem; text-align: center; letter-spacing: .1em;">
+    <strong>W — W — H — W — W — W — H</strong>
+  </p>
+  <p>
+    Whole = 2 frets, Half = 1 fret. The two half-steps always fall between
+    scale degrees <strong>3–4</strong> and <strong>7–1</strong>. That
+    placement is the entire sound of "major."
+  </p>
+
+  <h2>Scale degrees & their personalities</h2>
+  <table>
+    <tr><th>#</th><th>name</th><th>sound / job</th></tr>
+    <tr><td><strong>1</strong></td><td>tonic</td><td>Home. Total rest.</td></tr>
+    <tr><td>2</td><td>supertonic</td><td>Restless; wants to resolve.</td></tr>
+    <tr><td>3</td><td>mediant</td><td>Bright, stable. Defines "major."</td></tr>
+    <tr><td>4</td><td>subdominant</td><td>Suspended; wants to fall to 3.</td></tr>
+    <tr><td><strong>5</strong></td><td>dominant</td><td>Strong; second home.</td></tr>
+    <tr><td>6</td><td>submediant</td><td>Wistful (relative minor's home).</td></tr>
+    <tr><td>7</td><td>leading tone</td><td>Tense; yearns up to 1.</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Learn in this order:</strong> 1, 3, 5 (the structural triad) →
+    then 4 (suspended) → then 7 (tense) → then 2 and 6. Practice with the
+    ear trainer 5–10 min daily.
+  </div>
+
+  <h2>Diatonic triads = scale degrees stacked in thirds</h2>
+  <p>In a major key, the seven diatonic triads are built on each scale degree:</p>
+  <table>
+    <tr><th>degree</th><th>triad notes</th><th>quality</th><th>roman</th></tr>
+    <tr><td>1</td><td>1, 3, 5</td><td>major</td><td>I</td></tr>
+    <tr><td>2</td><td>2, 4, 6</td><td>minor</td><td>ii</td></tr>
+    <tr><td>3</td><td>3, 5, 7</td><td>minor</td><td>iii</td></tr>
+    <tr><td>4</td><td>4, 6, 1</td><td>major</td><td>IV</td></tr>
+    <tr><td>5</td><td>5, 7, 2</td><td>major</td><td>V</td></tr>
+    <tr><td>6</td><td>6, 1, 3</td><td>minor</td><td>vi</td></tr>
+    <tr><td>7</td><td>7, 2, 4</td><td>diminished</td><td>vii°</td></tr>
+  </table>
+  <p>This is the foundation of the Nashville Number System (Module 2).</p>
+
+  <p class="verse">"Sing to him a new song; play skillfully, and shout for joy." — Psalm 33:3</p>
+</div>
+</body>
+</html>
