@@ -22,12 +22,14 @@ import { createRoot } from "react-dom/client";
 import { Fretboard, type FretboardMode } from "./Fretboard";
 import { AudioEngine } from "../lib/audio";
 import type { FretNote } from "@lag/theory";
+import type { PentatonicKind } from "@lag/theory";
 import type { ScaleQuality } from "@lag/theory";
 
 interface FretboardPlaceholder {
   element: HTMLElement;
   tonic: string;
   quality: ScaleQuality;
+  pentatonic: PentatonicKind;
   mode: FretboardMode;
   frets: number;
   startFret: number;
@@ -41,6 +43,7 @@ function discoverPlaceholders(root: HTMLElement): FretboardPlaceholder[] {
       element: el,
       tonic: el.dataset.tonic ?? "C",
       quality: (el.dataset.quality as ScaleQuality) ?? "major",
+      pentatonic: (el.dataset.pentatonic as PentatonicKind) ?? "off",
       mode: (el.dataset.mode as FretboardMode) ?? "scale",
       frets: Number(el.dataset.frets ?? 12),
       startFret: Number(el.dataset.startFret ?? 0),
@@ -79,6 +82,7 @@ export function LessonContent({ html }: { html: string }) {
           <Fretboard
             tonic={p.tonic}
             quality={p.quality}
+            pentatonic={p.pentatonic}
             mode={p.mode}
             frets={p.frets}
             startFret={p.startFret}
@@ -88,8 +92,11 @@ export function LessonContent({ html }: { html: string }) {
             }}
           />
           <p className="text-xs text-[var(--color-muted)] mt-1">
-            Click any note to hear it. {p.tonic} {p.quality} ·{" "}
-            {p.startFret > 0 ? `start fret ${p.startFret}` : "open position"}.
+            Click any note to hear it.{" "}
+            {p.pentatonic !== "off"
+              ? `${p.tonic} ${p.pentatonic} pentatonic`
+              : `${p.tonic} ${p.quality}`}{" "}
+            · {p.startFret > 0 ? `start fret ${p.startFret}` : "open position"}.
           </p>
         </div>,
       );

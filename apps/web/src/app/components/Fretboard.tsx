@@ -20,7 +20,9 @@ import { useMemo } from "react";
 import {
   contextFor,
   fretNotes,
+  pentatonicContext,
   type FretNote,
+  type PentatonicKind,
   type PitchClass,
   type ScaleQuality,
 } from "@lag/theory";
@@ -31,6 +33,12 @@ export interface FretboardProps {
   /** Tonic of the key, e.g. "G", "Bb", "F#". */
   tonic: string;
   quality?: ScaleQuality;
+  /**
+   * Pentatonic overlay. When set, the fretboard highlights only the 5
+   * pentatonic notes (instead of the full 7-note diatonic scale), with the
+   * root on the pentatonic tonic. "off" = full diatonic scale (default).
+   */
+  pentatonic?: PentatonicKind;
   /** Number of frets to render (default 12). */
   frets?: number;
   /** Start fret (default 0 = open position). Non-zero hides the nut. */
@@ -81,6 +89,7 @@ const DOUBLE_INLAY_FRETS = new Set([12, 24]);
 export function Fretboard({
   tonic,
   quality = "major",
+  pentatonic = "off",
   frets = 12,
   startFret = 0,
   mode = "scale",
@@ -94,7 +103,10 @@ export function Fretboard({
   const labelWidth = 26; // space for open-string labels on the left
   const availableWidth = 720; // tuned to give comfortable spacing; SVG scales via viewBox
   const fretXs = useMemo(() => computeFretXs(frets, availableWidth), [frets]);
-  const ctx = useMemo(() => contextFor(tonic, quality), [tonic, quality]);
+  const ctx = useMemo(
+    () => (pentatonic === "off" ? contextFor(tonic, quality) : pentatonicContext(tonic, pentatonic)),
+    [tonic, quality, pentatonic],
+  );
   const notes = useMemo(() => fretNotes(ctx, startFret + frets), [ctx, startFret, frets]);
 
   // Filter to visible frets
@@ -120,7 +132,11 @@ export function Fretboard({
         className="w-full max-w-[820px]"
         style={{ minWidth: 540 }}
         role="img"
-        aria-label={`Fretboard in ${tonic} ${quality}`}
+        aria-label={
+          pentatonic === "off"
+            ? `Fretboard in ${tonic} ${quality}`
+            : `${tonic} ${pentatonic} pentatonic`
+        }
       >
         {/* Fretboard wood background */}
         <rect

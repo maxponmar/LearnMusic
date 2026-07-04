@@ -80,6 +80,42 @@ export function fretNotes(ctx: FretboardContext, maxFret: number = 12): FretNote
   return out;
 }
 
+/**
+ * Pentatonic fretboard context — highlights only the 5 pentatonic notes.
+ *
+ * Major pentatonic = degrees 1,2,3,5,6 of the major scale.
+ * Minor pentatonic = degrees 1,3,4,5,7 of the natural minor scale
+ *   (= 1,b3,4,5,b7 relative to the parallel major).
+ *
+ * Spelling is reused from the full key signature so enharmonics stay correct
+ * (e.g. F# in D major, not Gb). Degrees are re-numbered 1–5 across the
+ * pentatonic notes so the tonic is always degree 1 — the Fretboard component
+ * keys root-highlighting off degree === 1.
+ */
+const MAJOR_PENTATONIC_DEGREES = [1, 2, 3, 5, 6];
+const MINOR_PENTATONIC_DEGREES = [1, 3, 4, 5, 7];
+
+export type PentatonicKind = "off" | "major" | "minor";
+
+export function pentatonicContext(
+  tonic: string,
+  mode: Exclude<PentatonicKind, "off">,
+): FretboardContext {
+  const k = key(tonic, mode); // mode is "major" | "minor" — same as ScaleQuality
+  const allPcs = keyPcs(k);
+  const degreeIdx =
+    mode === "major" ? MAJOR_PENTATONIC_DEGREES : MINOR_PENTATONIC_DEGREES;
+  const pentPcs = degreeIdx.map((d) => allPcs[d - 1]!);
+  const scalePcs = new Set<PitchClass>(pentPcs);
+  const pcToName = new Map<PitchClass, string>();
+  const pcToDegree = new Map<PitchClass, number>();
+  pentPcs.forEach((pc, i) => {
+    pcToName.set(pc, spell(k.degrees[degreeIdx[i]! - 1]!));
+    pcToDegree.set(pc, i + 1); // re-number 1–5 for pentatonic
+  });
+  return { key: k, scalePcs, pcToName, pcToDegree };
+}
+
 const SHARP_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
 /** Open-string MIDI note names for display (low E → high E matches string 6 → 1). */

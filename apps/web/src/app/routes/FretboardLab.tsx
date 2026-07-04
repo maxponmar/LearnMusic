@@ -9,17 +9,23 @@
 import { useMemo, useState } from "react";
 import { Fretboard, type FretboardMode } from "../components/Fretboard";
 import { AudioEngine } from "../lib/audio";
-import { contextFor, fretNotes, midiToFreq } from "@lag/theory";
+import { contextFor, fretNotes, midiToFreq, type PentatonicKind } from "@lag/theory";
 
 const KEYS = ["C", "G", "D", "A", "E", "F", "Bb", "Eb"] as const;
 const MODES: { value: FretboardMode; label: string }[] = [
   { value: "scale", label: "Whole scale" },
   { value: "root-only", label: "Roots only" },
 ];
+const PENTATONIC_OPTS: { value: PentatonicKind; label: string }[] = [
+  { value: "off", label: "Full scale" },
+  { value: "major", label: "Major pent." },
+  { value: "minor", label: "Minor pent." },
+];
 
 export function FretboardLab() {
   const [tonic, setTonic] = useState<string>("G");
   const [mode, setMode] = useState<FretboardMode>("scale");
+  const [pentatonic, setPentatonic] = useState<PentatonicKind>("off");
   const [audioReady, setAudioReady] = useState(false);
   const [audioLoading, setAudioLoading] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
@@ -81,8 +87,8 @@ export function FretboardLab() {
         <p className="text-[var(--color-muted)] mt-2 max-w-prose">
           Pick a key and see every scale note light up across the neck. Click
           any dot to hear it. The brown dots are roots; the soft dots are the
-          rest of the scale. Try <strong>root-only</strong> mode to drill the
-          "find every G" exercise from Lesson 1.
+          rest of the scale. Switch to <strong>pentatonic</strong> overlay to
+          see the 5-note fill vocabulary — the bridge to Module 4.
         </p>
       </div>
 
@@ -117,6 +123,23 @@ export function FretboardLab() {
           ))}
         </div>
 
+        <div className="flex gap-1 ml-2">
+          <span className="text-sm font-medium self-center mr-1">Pent:</span>
+          {PENTATONIC_OPTS.map((p) => (
+            <button
+              key={p.value}
+              onClick={() => setPentatonic(p.value)}
+              className={`px-3 py-1.5 rounded text-sm transition ${
+                pentatonic === p.value
+                  ? "bg-[var(--color-accent)] text-white"
+                  : "bg-white border border-[var(--color-accent-soft)] text-[var(--color-muted)] hover:bg-[var(--color-accent-soft)]/15"
+              }`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+
         <button
           onClick={playScale}
           disabled={audioLoading}
@@ -141,6 +164,7 @@ export function FretboardLab() {
         <Fretboard
           tonic={tonic}
           mode={mode}
+          pentatonic={pentatonic}
           hoveredMidi={hoveredMidi}
           onPlayNote={async (note) => {
             await ensureAudio();
