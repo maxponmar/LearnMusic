@@ -14,6 +14,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@lag/curriculum':
+        specifier: workspace:*
+        version: link:../../packages/curriculum
       '@lag/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -97,6 +100,12 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.2
         version: 19.2.3(@types/react@19.2.17)
+
+  packages/curriculum:
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
 
   packages/shared:
     dependencies:

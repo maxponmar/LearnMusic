@@ -70,6 +70,10 @@ export function SongPracticePanel({
       const chordSec = barSec * 0.88;
       const gapSec = Math.max(0, barSec - chordSec);
 
+      // 4-beat count-in with metronome before chords
+      await new Promise((r) => setTimeout(r, barSec * 4 * 1000));
+      if (stopRef.current) return;
+
       do {
         if (stopRef.current) break;
         await AudioEngine.playProgression(chordMidis, chordSec, gapSec);

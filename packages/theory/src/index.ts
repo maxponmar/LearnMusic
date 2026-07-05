@@ -22,3 +22,4 @@ export * from "./nns.js";
 export * from "./scales.js";
 export * from "./context.js";
 export * from "./capo.js";
+export * from "./instruments.js";

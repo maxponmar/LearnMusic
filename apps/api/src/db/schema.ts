@@ -18,6 +18,24 @@ export interface PracticeSessionRow {
   notes: string | null;
   moduleId: string | null;
   lessonId: string | null;
+  unitId: string | null;
+}
+
+export interface UnitProgressRow {
+  unitId: string;
+  status: "not_started" | "started" | "complete";
+  startedAt: string | null;
+  completedAt: string | null;
+  timeSpentSec: number;
+}
+
+export interface ReviewCardRow {
+  skillKey: string;
+  nextReviewAt: string;
+  intervalDays: number;
+  easeFactor: number;
+  repetitions: number;
+  lastResult: "again" | "hard" | "good" | "easy" | null;
 }
 
 export interface LessonProgressRow {

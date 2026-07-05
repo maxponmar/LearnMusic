@@ -13,6 +13,7 @@ import { lessonsRouter } from "./routes/lessons.js";
 import { practiceRouter } from "./routes/practice.js";
 import { earTrainingRouter } from "./routes/earTraining.js";
 import { progressRouter } from "./routes/progress.js";
+import { pathRouter } from "./routes/path.js";
 import { DB_PATH } from "./db/client.js";
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/api/lessons", lessonsRouter);
 app.use("/api/practice", practiceRouter);
 app.use("/api/ear-training", earTrainingRouter);
 app.use("/api/progress", progressRouter);
+app.use("/api/path", pathRouter);
 
 // 404 handler for unmatched routes
 app.use((_req, res) => {

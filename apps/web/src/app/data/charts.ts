@@ -33,6 +33,8 @@ export const SONG_CHARTS: SongChartData[] = [
     defaultKey: "C",
     timeSignature: "4/4",
     bpm: 72,
+    repertoire: "worship",
+    recommendedAfterOrder: 20,
     sections: [
       { name: "Verse", bars: bars("1 4 1 5") },
       { name: "Chorus", bars: bars("1 4 6m 5") },
@@ -47,6 +49,8 @@ export const SONG_CHARTS: SongChartData[] = [
     defaultKey: "D",
     timeSignature: "4/4",
     bpm: 68,
+    repertoire: "worship",
+    recommendedAfterOrder: 20,
     sections: [
       { name: "Verse", bars: bars("1 5 6m 4") },
       { name: "Chorus", bars: bars("1 5 6m 4") },
@@ -62,6 +66,8 @@ export const SONG_CHARTS: SongChartData[] = [
     defaultKey: "D",
     timeSignature: "4/4",
     bpm: 74,
+    repertoire: "worship",
+    recommendedAfterOrder: 20,
     sections: [
       { name: "Verse", bars: bars("6m 5 1 4") },
       { name: "Chorus", bars: bars("1 5 6m 4") },
@@ -76,6 +82,8 @@ export const SONG_CHARTS: SongChartData[] = [
     defaultKey: "G",
     timeSignature: "4/4",
     bpm: 72,
+    repertoire: "worship",
+    recommendedAfterOrder: 20,
     sections: [
       { name: "Verse", bars: bars("1 1 4 4") },
       { name: "Chorus", bars: bars("1 5 6m 4") },
@@ -90,6 +98,8 @@ export const SONG_CHARTS: SongChartData[] = [
     defaultKey: "G",
     timeSignature: "4/4",
     bpm: 76,
+    repertoire: "worship",
+    recommendedAfterOrder: 20,
     sections: [
       { name: "Verse", bars: bars("1 4 6m 5") },
       { name: "Chorus", bars: bars("1 4 6m 5") },
@@ -104,6 +114,8 @@ export const SONG_CHARTS: SongChartData[] = [
     defaultKey: "D",
     timeSignature: "4/4",
     bpm: 80,
+    repertoire: "worship",
+    recommendedAfterOrder: 20,
     sections: [
       { name: "Verse", bars: bars("1 4 5 1") },
       { name: "Chorus", bars: bars("1 4 5 1") },
@@ -118,6 +130,8 @@ export const SONG_CHARTS: SongChartData[] = [
     defaultKey: "G",
     timeSignature: "4/4",
     bpm: 78,
+    repertoire: "worship",
+    recommendedAfterOrder: 20,
     sections: [
       { name: "Verse", bars: bars("1 5 6m 4") },
       { name: "Chorus", bars: bars("6m 4 1 5") },
@@ -132,6 +146,8 @@ export const SONG_CHARTS: SongChartData[] = [
     defaultKey: "C",
     timeSignature: "4/4",
     bpm: 72,
+    repertoire: "worship",
+    recommendedAfterOrder: 20,
     sections: [
       { name: "Verse", bars: bars("1 4 5 1") },
       { name: "Chorus", bars: bars("4 5 1 6m") },

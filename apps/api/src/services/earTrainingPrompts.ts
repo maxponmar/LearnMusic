@@ -56,11 +56,15 @@ function promptId(): string {
 export function generateScaleDegreePrompt(opts?: {
   keyName?: string;
   quality?: ScaleQuality;
+  targetDegree?: number;
 }): ScaleDegreePrompt {
   const tonic = opts?.keyName ?? randomKey();
   const quality: ScaleQuality = opts?.quality ?? "major";
   const k = key(tonic, quality);
-  const degree = rand1(7); // 1–7
+  const degree =
+    opts?.targetDegree && opts.targetDegree >= 1 && opts.targetDegree <= 7
+      ? opts.targetDegree
+      : rand1(7);
   const spelled = k.degrees[degree - 1]!;
   const pc = spelledToPc(spelled);
 
@@ -212,9 +216,15 @@ export function generateProgressionPrompt(opts?: {
 /** Dispatch prompt generation by exercise type. */
 export function generatePrompt(
   exerciseType: "scale-degree" | "chord-quality" | "progression",
-  opts?: { keyName?: string; quality?: ScaleQuality },
+  opts?: { keyName?: string; quality?: ScaleQuality; targetDegree?: number },
 ): EarTrainingPrompt {
-  if (exerciseType === "scale-degree") return generateScaleDegreePrompt(opts);
+  if (exerciseType === "scale-degree") {
+    return generateScaleDegreePrompt({
+      keyName: opts?.keyName,
+      quality: opts?.quality,
+      targetDegree: opts?.targetDegree,
+    });
+  }
   if (exerciseType === "chord-quality") return generateChordQualityPrompt(opts);
   return generateProgressionPrompt(opts);
 }

@@ -22,21 +22,22 @@ practiceRouter.post("/", (req, res) => {
   const input = parsed.data;
   const date = input.date ?? new Date().toISOString();
   const row = insertReturning(
-    `INSERT INTO practice_sessions (date, duration_sec, notes, module_id, lesson_id)
-     VALUES (?, ?, ?, ?, ?)
-     RETURNING id, date, duration_sec AS durationSec, notes, module_id AS moduleId, lesson_id AS lessonId`,
+    `INSERT INTO practice_sessions (date, duration_sec, notes, module_id, lesson_id, unit_id)
+     VALUES (?, ?, ?, ?, ?, ?)
+     RETURNING id, date, duration_sec AS durationSec, notes, module_id AS moduleId, lesson_id AS lessonId, unit_id AS unitId`,
     date,
     input.durationSec,
     input.notes ?? null,
     input.moduleId ?? null,
     input.lessonId ?? null,
+    input.unitId ?? null,
   );
   res.status(201).json({ ok: true, data: row });
 });
 
 practiceRouter.get("/", (_req, res) => {
   const rows = all(
-    `SELECT id, date, duration_sec AS durationSec, notes, module_id AS moduleId, lesson_id AS lessonId
+    `SELECT id, date, duration_sec AS durationSec, notes, module_id AS moduleId, lesson_id AS lessonId, unit_id AS unitId
      FROM practice_sessions
      ORDER BY date DESC`,
   );

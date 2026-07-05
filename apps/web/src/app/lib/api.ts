@@ -1,11 +1,5 @@
 /**
  * Typed API client for the Express backend.
- *
- * Every response is wrapped in the { ok, data } | { ok: false, error } envelope
- * (see @lag/shared). We unwrap it here and throw on errors so calling code can
- * use plain try/catch. Response shapes are validated at the type level by the
- * zod-derived types in @lag/shared — runtime re-validation is deferred until
- * we see real drift.
  */
 
 import type {
@@ -18,11 +12,17 @@ import type {
   EarTrainingPrompt,
   EarTrainingStats,
   LessonProgress,
+  TodaySession,
+  PathModule,
+  PathUnit,
+  UnitProgress,
+  ReviewCard,
+  ReviewRating,
 } from "@lag/shared";
 
 const BASE =
-  (import.meta as any).env?.PUBLIC_API_URL ??
-  (typeof window !== "undefined" ? window.location.origin : "http://localhost:3001");
+  import.meta.env.PUBLIC_API_URL ??
+  (typeof window !== "undefined" ? "http://localhost:3001" : "http://localhost:3001");
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
@@ -59,8 +59,11 @@ export const api = {
       body: JSON.stringify(input),
     }),
 
-  newPrompt: (type: "scale-degree" | "chord-quality" | "progression") =>
-    request<EarTrainingPrompt>(`/api/ear-training/prompts/new?type=${type}`),
+  newPrompt: (type: "scale-degree" | "chord-quality" | "progression" | "adaptive", key?: string) => {
+    const q = new URLSearchParams({ type });
+    if (key) q.set("key", key);
+    return request<EarTrainingPrompt>(`/api/ear-training/prompts/new?${q}`);
+  },
   getStats: (type: "scale-degree" | "chord-quality" | "progression") =>
     request<EarTrainingStats>(`/api/ear-training/stats?type=${type}`),
 
@@ -69,5 +72,28 @@ export const api = {
     request<LessonProgress>(`/api/progress/lessons/${encodeURIComponent(lessonId)}`, {
       method: "PUT",
       body: JSON.stringify({ status }),
+    }),
+
+  getToday: () => request<TodaySession>("/api/path/today"),
+  getPath: () => request<PathModule[]>("/api/path"),
+  getUnitProgress: () => request<UnitProgress[]>("/api/path/progress"),
+  getUnit: (id: string) => request<PathUnit>(`/api/path/units/${encodeURIComponent(id)}`),
+  startUnit: (id: string) =>
+    request<UnitProgress>(`/api/path/units/${encodeURIComponent(id)}/start`, { method: "POST" }),
+  completeUnit: (id: string, timeSpentSec?: number) =>
+    request<UnitProgress>(`/api/path/units/${encodeURIComponent(id)}/complete`, {
+      method: "POST",
+      body: JSON.stringify({ timeSpentSec }),
+    }),
+  listReviewCards: () => request<ReviewCard[]>("/api/path/reviews"),
+  submitReview: (skillKey: string, rating: ReviewRating) =>
+    request<ReviewCard>("/api/path/reviews", {
+      method: "POST",
+      body: JSON.stringify({ skillKey, rating }),
+    }),
+  setLastBpm: (bpm: number) =>
+    request<{ bpm: number }>("/api/path/settings/bpm", {
+      method: "PUT",
+      body: JSON.stringify({ bpm }),
     }),
 };

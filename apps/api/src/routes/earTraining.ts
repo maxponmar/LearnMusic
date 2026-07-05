@@ -10,19 +10,30 @@ import { Router } from "express";
 import { insertReturning, all } from "../db/client.js";
 import { EarTrainingAttemptInputSchema } from "@lag/shared";
 import { generatePrompt, computeStats } from "../services/earTrainingPrompts.js";
+import { generateAdaptivePrompt } from "../services/adaptiveEar.js";
+import { submitReviewResult } from "../services/learningEngine.js";
+import { ratingFromCorrect } from "../services/srs.js";
 
 export const earTrainingRouter = Router();
 
-/** GET /api/ear-training/prompts/new?type=scale-degree — fresh server-generated prompt. */
+/** GET /api/ear-training/prompts/new?type=scale-degree|adaptive — fresh server-generated prompt. */
 earTrainingRouter.get("/prompts/new", (req, res) => {
   const rawType = String(req.query.type ?? "scale-degree");
+  if (rawType === "adaptive") {
+    res.json({ ok: true, data: generateAdaptivePrompt() });
+    return;
+  }
   const type = (
     ["scale-degree", "chord-quality", "progression"].includes(rawType)
       ? rawType
       : "scale-degree"
   ) as "scale-degree" | "chord-quality" | "progression";
   const keyName = typeof req.query.key === "string" ? req.query.key : undefined;
-  const prompt = generatePrompt(type, keyName ? { keyName } : undefined);
+  const degree = typeof req.query.degree === "string" ? Number(req.query.degree) : undefined;
+  const prompt = generatePrompt(type, {
+    keyName,
+    targetDegree: Number.isFinite(degree) ? degree : undefined,
+  });
   res.json({ ok: true, data: prompt });
 });
 
@@ -52,8 +63,30 @@ earTrainingRouter.post("/attempts", (req, res) => {
     a.correct ? 1 : 0,
     a.responseMs,
   );
+
+  // Update SRS for scale-degree / chord-quality / progression skills
+  const skillKey = skillKeyForAttempt(a.exerciseType, a.prompt);
+  if (skillKey) {
+    const rating = ratingFromCorrect(a.correct, a.responseMs);
+    submitReviewResult(skillKey, rating);
+  }
+
   res.status(201).json({ ok: true, data: row });
 });
+
+function skillKeyForAttempt(exerciseType: string, prompt: string): string | null {
+  if (exerciseType === "chord-quality") return "diatonic-triads";
+  if (exerciseType === "progression") return "progression-ear";
+  try {
+    const p = JSON.parse(prompt) as { degree?: number };
+    if (p.degree === 1) return "scale-degree-1";
+    if (p.degree === 3) return "scale-degree-3";
+    if (p.degree === 5) return "scale-degree-5";
+    return "scale-degree-1";
+  } catch {
+    return "scale-degree-1";
+  }
+}
 
 earTrainingRouter.get("/attempts", (req, res) => {
   const rows = all(

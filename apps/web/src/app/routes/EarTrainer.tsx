@@ -28,7 +28,7 @@ import type {
   EarTrainingStats,
 } from "@lag/shared";
 
-type Mode = "scale-degree" | "chord-quality" | "progression";
+type Mode = "scale-degree" | "chord-quality" | "progression" | "adaptive";
 type Phase = "loading" | "ready" | "playing" | "answered";
 
 // The five common patterns serve as the answer choices for progression mode.
@@ -58,6 +58,7 @@ export function EarTrainer() {
   const [searchParams] = useSearchParams();
   const initialMode = (() => {
     const m = searchParams.get("mode");
+    if (m === "adaptive") return "adaptive" as const;
     return m === "scale-degree" || m === "chord-quality" || m === "progression" ? m : "scale-degree";
   })();
   const [mode, setMode] = useState<Mode>(initialMode);
@@ -99,7 +100,8 @@ export function EarTrainer() {
   // Refresh stats from server
   const refreshStats = useCallback(async () => {
     try {
-      setStats(await api.getStats(mode));
+      const statType = mode === "adaptive" ? "scale-degree" : mode;
+      setStats(await api.getStats(statType));
     } catch {
       /* ignore — non-fatal */
     }
@@ -178,8 +180,8 @@ export function EarTrainer() {
       </div>
 
       {/* Mode toggle */}
-      <div className="flex gap-1 p-1 rounded-md bg-white/40 border border-[var(--color-accent-soft)]/30 w-fit">
-        {(["scale-degree", "chord-quality", "progression"] as const).map((m) => (
+      <div className="flex gap-1 p-1 rounded-md bg-white/40 border border-[var(--color-accent-soft)]/30 w-fit flex-wrap">
+        {(["adaptive", "scale-degree", "chord-quality", "progression"] as const).map((m) => (
           <button
             key={m}
             onClick={() => {
@@ -190,11 +192,13 @@ export function EarTrainer() {
               mode === m ? "bg-[var(--color-accent)] text-white" : "text-[var(--color-muted)]"
             }`}
           >
-            {m === "scale-degree"
-              ? "Scale degrees"
-              : m === "chord-quality"
-                ? "Chord quality"
-                : "Progressions"}
+            {m === "adaptive"
+              ? "Adaptive review"
+              : m === "scale-degree"
+                ? "Scale degrees"
+                : m === "chord-quality"
+                  ? "Chord quality"
+                  : "Progressions"}
           </button>
         ))}
       </div>

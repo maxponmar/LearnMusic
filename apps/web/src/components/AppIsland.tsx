@@ -1,19 +1,15 @@
 /**
- * AppIsland — the single React SPA mounted via `client:only="react"` on the
- * /app/* Astro routes. Owns the entire interactive learning experience:
- * client-side routing, shared client state, the fretboard, ear trainer, and
- * practice journal.
- *
- * Why client:only? The app is ~90% interactive (live state shared between
- * fretboard, audio engine, and journal), so it's effectively a React SPA.
- * Astro's islands shine for content pages; here we use one big island and let
- * React Router handle the in-app navigation. SSR would buy us nothing —
- * there's no per-route content to index.
+ * AppIsland — React SPA for the guided learning experience.
  */
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppLayout } from "../app/routes/AppLayout";
-import { AppHome } from "../app/routes/AppHome";
+import { Today } from "../app/routes/Today";
+import { Path } from "../app/routes/Path";
+import { UnitPractice } from "../app/routes/UnitPractice";
+import { Library } from "../app/routes/Library";
+import { Tools } from "../app/routes/Tools";
+import { Settings } from "../app/routes/Settings";
 import { LessonsList } from "../app/routes/LessonsList";
 import { LessonReader } from "../app/routes/LessonReader";
 import { SongsList } from "../app/routes/SongsList";
@@ -28,7 +24,13 @@ export default function AppIsland() {
     <BrowserRouter>
       <Routes>
         <Route element={<AppLayout />}>
-          <Route index path="/app" element={<AppHome />} />
+          <Route index path="/app" element={<Navigate to="/app/today" replace />} />
+          <Route path="/app/today" element={<Today />} />
+          <Route path="/app/path" element={<Path />} />
+          <Route path="/app/units/:id" element={<UnitPractice />} />
+          <Route path="/app/library" element={<Library />} />
+          <Route path="/app/tools" element={<Tools />} />
+          <Route path="/app/settings" element={<Settings />} />
           <Route path="/app/lessons" element={<LessonsList />} />
           <Route path="/app/lessons/:id" element={<LessonReader />} />
           <Route path="/app/songs" element={<SongsList />} />
@@ -37,7 +39,7 @@ export default function AppIsland() {
           <Route path="/app/journal" element={<Journal />} />
           <Route path="/app/fretboard" element={<FretboardLab />} />
           <Route path="/app/metronome" element={<MetronomePage />} />
-          <Route path="*" element={<Navigate to="/app" replace />} />
+          <Route path="*" element={<Navigate to="/app/today" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>

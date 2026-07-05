@@ -57,12 +57,14 @@ export const PracticeSessionInputSchema = z.object({
   notes: z.string().max(2000).optional(),
   moduleId: z.string().optional(),
   lessonId: z.string().optional(),
+  unitId: z.string().optional(),
 });
 export type PracticeSessionInput = z.infer<typeof PracticeSessionInputSchema>;
 
 export const PracticeSessionSchema = PracticeSessionInputSchema.extend({
   id: z.number().int(),
   date: isoTimestamp,
+  unitId: z.string().optional(),
 });
 export type PracticeSession = z.infer<typeof PracticeSessionSchema>;
 
@@ -199,6 +201,9 @@ export const SongSectionSchema = z.object({
 });
 export type SongSection = z.infer<typeof SongSectionSchema>;
 
+export const SongRepertoireSchema = z.enum(["general", "worship", "folk", "practice"]);
+export type SongRepertoire = z.infer<typeof SongRepertoireSchema>;
+
 export const SongChartSchema = z.object({
   slug: z.string(),
   title: z.string(),
@@ -208,10 +213,118 @@ export const SongChartSchema = z.object({
   timeSignature: z.string(),
   /** Suggested practice tempo (worship ballad/mid-tempo range). */
   bpm: z.number().int().min(40).max(240).optional(),
+  /** Repertoire category for library filtering. */
+  repertoire: SongRepertoireSchema.default("general"),
+  /** Path stage order — songs recommended when user reaches this unit order. */
+  recommendedAfterOrder: z.number().int().nonnegative().optional(),
   sections: z.array(SongSectionSchema),
   notes: z.string().optional(),
 });
 export type SongChartData = z.infer<typeof SongChartSchema>;
+
+// ----------------------------------------------------------------------------
+// Learning path (curriculum units)
+// ----------------------------------------------------------------------------
+
+export const UnitStatusSchema = z.enum(["not_started", "started", "complete", "locked"]);
+export type UnitStatus = z.infer<typeof UnitStatusSchema>;
+
+export const PracticeStepSchema = z.object({
+  tool: z.enum(["metronome", "fretboard", "ear", "open-strings", "songs", "journal"]),
+  label: z.string(),
+  href: z.string().optional(),
+  bpm: z.number().int().optional(),
+  minutes: z.number().int().optional(),
+});
+export type PracticeStep = z.infer<typeof PracticeStepSchema>;
+
+export const PassCriteriaSchema = z.object({
+  type: z.enum(["manual", "ear-reps", "min-time"]),
+  minSeconds: z.number().int().optional(),
+  minAccuracy: z.number().min(0).max(1).optional(),
+  minReps: z.number().int().optional(),
+});
+export type PassCriteria = z.infer<typeof PassCriteriaSchema>;
+
+export const PathUnitSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  moduleId: z.string(),
+  moduleName: z.string(),
+  order: z.number().int(),
+  type: z.enum(["learn", "drill", "checkpoint", "apply"]),
+  skills: z.array(z.string()),
+  html: z.string(),
+  practice: z.array(PracticeStepSchema),
+  unlockAfter: z.array(z.string()),
+  passCriteria: PassCriteriaSchema,
+  deepDiveLessonId: z.string().optional(),
+  estimatedMinutes: z.number().int(),
+  status: UnitStatusSchema,
+});
+export type PathUnit = z.infer<typeof PathUnitSchema>;
+
+export const PathModuleSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  order: z.number().int(),
+  goal: z.string(),
+  units: z.array(PathUnitSchema),
+});
+export type PathModule = z.infer<typeof PathModuleSchema>;
+
+export const UnitProgressSchema = z.object({
+  unitId: z.string(),
+  status: z.enum(["not_started", "started", "complete"]),
+  startedAt: isoTimestamp.nullable(),
+  completedAt: isoTimestamp.nullable(),
+  timeSpentSec: z.number().int().nonnegative(),
+});
+export type UnitProgress = z.infer<typeof UnitProgressSchema>;
+
+export const ReviewRatingSchema = z.enum(["again", "hard", "good", "easy"]);
+export type ReviewRating = z.infer<typeof ReviewRatingSchema>;
+
+export const ReviewCardSchema = z.object({
+  skillKey: z.string(),
+  nextReviewAt: isoTimestamp,
+  intervalDays: z.number(),
+  easeFactor: z.number(),
+  repetitions: z.number().int(),
+  lastResult: ReviewRatingSchema.nullable(),
+});
+export type ReviewCard = z.infer<typeof ReviewCardSchema>;
+
+export const TodaySessionStepSchema = z.object({
+  kind: z.enum(["warmup", "unit", "review", "apply", "log"]),
+  title: z.string(),
+  description: z.string(),
+  unitId: z.string().optional(),
+  skillKey: z.string().optional(),
+  href: z.string().optional(),
+  bpm: z.number().int().optional(),
+  minutes: z.number().int(),
+});
+export type TodaySessionStep = z.infer<typeof TodaySessionStepSchema>;
+
+export const TodaySessionSchema = z.object({
+  steps: z.array(TodaySessionStepSchema),
+  nextUnitId: z.string().nullable(),
+  dueReviewCount: z.number().int(),
+  estimatedMinutes: z.number().int(),
+});
+export type TodaySession = z.infer<typeof TodaySessionSchema>;
+
+export const CompleteUnitInputSchema = z.object({
+  timeSpentSec: z.number().int().nonnegative().optional(),
+});
+export type CompleteUnitInput = z.infer<typeof CompleteUnitInputSchema>;
+
+export const ReviewResultInputSchema = z.object({
+  skillKey: z.string(),
+  rating: ReviewRatingSchema,
+});
+export type ReviewResultInput = z.infer<typeof ReviewResultInputSchema>;
 
 // ----------------------------------------------------------------------------
 // Standard API envelope

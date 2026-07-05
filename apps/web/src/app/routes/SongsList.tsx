@@ -27,9 +27,8 @@ export function SongsList() {
       <div>
         <h1 className="font-serif text-3xl">Song chart library</h1>
         <p className="text-[var(--color-muted)] mt-2 max-w-prose">
-          Worship songs charted as Nashville Number System progressions —
-          key-agnostic, rendered into whatever key you need with a capo
-          suggestion attached.
+          Song charts as Nashville Number progressions — practice with metronome + guitar.
+          Worship repertoire is tagged; verify charts by ear before leading from them.
         </p>
       </div>
 
@@ -56,6 +55,7 @@ export function SongsList() {
                       <div className="text-xs font-mono text-[var(--color-muted)] whitespace-nowrap text-right">
                         <div>key {chart.defaultKey}</div>
                         {chart.bpm != null && <div>{chart.bpm} BPM</div>}
+                        {chart.repertoire && <div className="capitalize">{chart.repertoire}</div>}
                       </div>
                     </div>
                   </Link>

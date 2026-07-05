@@ -29,6 +29,13 @@ export const sqlite = new DatabaseSync(dbPath);
 sqlite.exec("PRAGMA journal_mode = WAL;");
 sqlite.exec("PRAGMA foreign_keys = ON;");
 
+// Idempotent column add for migrations applied before unit_id existed
+try {
+  sqlite.exec("ALTER TABLE practice_sessions ADD COLUMN unit_id TEXT");
+} catch {
+  /* column already present */
+}
+
 export const DB_PATH = dbPath;
 
 /**
