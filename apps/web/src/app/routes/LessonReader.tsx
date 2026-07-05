@@ -6,13 +6,15 @@
  */
 
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
 import type { Lesson, LessonStatus } from "@lag/shared";
 import { LessonContent } from "../components/LessonFretboard";
+import { LessonPracticePanel } from "../components/LessonPracticePanel";
 
 export function LessonReader() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<LessonStatus | null>(null);
@@ -65,11 +67,12 @@ export function LessonReader() {
         )}
       </div>
       <LessonContent html={lesson.html} />
-      <hr className="border-[var(--color-accent-soft)]/30" />
-      <p className="text-sm text-[var(--color-muted)]">
-        Questions on this lesson? Ask the agent — it's your teacher and can
-        clarify anything that's unclear, or adapt the lesson to your guitar.
-      </p>
+      <LessonPracticePanel
+        lesson={lesson}
+        onLogPractice={() =>
+          navigate(`/app/journal?lesson=${encodeURIComponent(lesson.id)}&minutes=${lesson.minutes}`)
+        }
+      />
     </div>
   );
 }

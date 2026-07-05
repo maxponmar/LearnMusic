@@ -22,9 +22,9 @@ import type * as Tone from "tone";
 // One sample per octave across the guitar's range. Tone.Sampler pitches the
 // samples in between to fill the gaps. URLs use note names with octaves.
 const SAMPLE_BASE =
-  "https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-ogg@1.0.0/";
-// The pack ships samples at C2, C3, C4, C5 (covers guitar range E2–E6).
-const SAMPLE_NOTES = ["C2", "C3", "C4", "C5"];
+  "https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-ogg@1.1.0/";
+// One sample per octave: C3–C5 (lowest available C; Tone pitches down to E2).
+const SAMPLE_NOTES = ["C3", "C4", "C5"];
 
 class AudioEngineImpl {
   private tone: typeof Tone | null = null;
@@ -39,7 +39,10 @@ class AudioEngineImpl {
   /** Initialize Tone.js + load samples. Must be called from a user gesture. */
   async init(): Promise<void> {
     if (this.initPromise) return this.initPromise;
-    this.initPromise = this.doInit();
+    this.initPromise = this.doInit().catch((err) => {
+      this.initPromise = null;
+      throw err;
+    });
     return this.initPromise;
   }
 
@@ -56,12 +59,16 @@ class AudioEngineImpl {
     for (const note of SAMPLE_NOTES) {
       samples[note] = `${SAMPLE_BASE}${note}.ogg`;
     }
-    this.sampler = new this.tone.Sampler({
-      urls: samples,
-      onload: () => {
-        this._ready = true;
-      },
-    }).toDestination();
+    await new Promise<void>((resolve, reject) => {
+      this.sampler = new this.tone!.Sampler({
+        urls: samples,
+        onload: () => {
+          this._ready = true;
+          resolve();
+        },
+        onerror: (err) => reject(err instanceof Error ? err : new Error(String(err))),
+      }).toDestination();
+    });
   }
 
   /** Play a single MIDI note. No-op if not initialized. */

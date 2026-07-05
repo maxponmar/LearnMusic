@@ -6,13 +6,21 @@
 
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
+import { useSearchParams } from "react-router-dom";
 import { api } from "../lib/api";
 import type { PracticeSession } from "@lag/shared";
 
 export function Journal() {
+  const [searchParams] = useSearchParams();
   const [sessions, setSessions] = useState<PracticeSession[] | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [draft, setDraft] = useState({ durationMin: 15, notes: "" });
+  const [draft, setDraft] = useState(() => ({
+    durationMin: Number(searchParams.get("minutes")) || 15,
+    notes: searchParams.get("lesson")
+      ? `Lesson: ${searchParams.get("lesson")?.replace(/^\d+-/, "").replace(/-/g, " ")}`
+      : "",
+    lessonId: searchParams.get("lesson") ?? undefined,
+  }));
 
   async function refresh() {
     try {
@@ -32,8 +40,9 @@ export function Journal() {
     await api.logPractice({
       durationSec: Math.round(draft.durationMin * 60),
       notes: draft.notes || undefined,
+      lessonId: draft.lessonId,
     });
-    setDraft({ durationMin: 15, notes: "" });
+    setDraft({ durationMin: 15, notes: "", lessonId: undefined });
     await refresh();
   }
 
@@ -42,6 +51,10 @@ export function Journal() {
   return (
     <div className="space-y-8">
       <h1 className="font-serif text-3xl">Practice journal</h1>
+      <p className="text-sm text-[var(--color-muted)] max-w-prose">
+        Log what you actually played on your guitar — not just app quizzes.
+        Even 10 focused minutes counts.
+      </p>
 
       <form onSubmit={submit} className="p-5 rounded-md bg-white/40 border border-[var(--color-accent-soft)]/30 space-y-3">
         <label className="block text-sm font-medium">Log a session</label>

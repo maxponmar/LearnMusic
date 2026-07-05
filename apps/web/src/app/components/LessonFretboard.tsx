@@ -19,6 +19,7 @@
 
 import { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
+import { useNavigate } from "react-router-dom";
 import { Fretboard, type FretboardMode } from "./Fretboard";
 import { AudioEngine } from "../lib/audio";
 import type { FretNote } from "@lag/theory";
@@ -62,10 +63,25 @@ async function ensureAudioOnce() {
 
 export function LessonContent({ html }: { html: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    // In-app links in lesson HTML should use client-side routing.
+    const appLinks = container.querySelectorAll<HTMLAnchorElement>('a[href^="/app"]');
+    const linkCleanups: Array<() => void> = [];
+    appLinks.forEach((anchor) => {
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+      const onClick = (e: MouseEvent) => {
+        e.preventDefault();
+        navigate(href);
+      };
+      anchor.addEventListener("click", onClick);
+      linkCleanups.push(() => anchor.removeEventListener("click", onClick));
+    });
 
     // 1. discover embedded fretboard placeholders
     const placeholders = discoverPlaceholders(container);
@@ -103,10 +119,11 @@ export function LessonContent({ html }: { html: string }) {
     }
 
     return () => {
+      linkCleanups.forEach((fn) => fn());
       // Cleanup on unmount or re-render
       for (const r of roots) r.root.unmount();
     };
-  }, [html]);
+  }, [html, navigate]);
 
   return <div ref={containerRef} className="prose-lesson" dangerouslySetInnerHTML={{ __html: html }} />;
 }

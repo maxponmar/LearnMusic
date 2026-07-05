@@ -17,6 +17,7 @@
  */
 
 import { useCallback, useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../lib/api";
 import { AudioEngine } from "../lib/audio";
 import { contextFor, keyPcs, WORSHIP_PROGRESSIONS } from "@lag/theory";
@@ -54,7 +55,12 @@ const CHORD_FEEL: Record<string, string> = {
 };
 
 export function EarTrainer() {
-  const [mode, setMode] = useState<Mode>("scale-degree");
+  const [searchParams] = useSearchParams();
+  const initialMode = (() => {
+    const m = searchParams.get("mode");
+    return m === "scale-degree" || m === "chord-quality" || m === "progression" ? m : "scale-degree";
+  })();
+  const [mode, setMode] = useState<Mode>(initialMode);
   const [phase, setPhase] = useState<Phase>("loading");
   const [prompt, setPrompt] = useState<
     ScaleDegreePrompt | ChordQualityPrompt | ProgressionPrompt | null
@@ -84,16 +90,11 @@ export function EarTrainer() {
     setPhase("loading");
     setLastAnswer(null);
     setWasCorrect(null);
-    const ok = await ensureAudio();
-    if (!ok) {
-      setPhase("ready");
-      return;
-    }
     const p = await api.newPrompt(mode);
     setPrompt(p);
     setPhase("ready");
     setRoundStart(Date.now());
-  }, [mode, ensureAudio]);
+  }, [mode]);
 
   // Refresh stats from server
   const refreshStats = useCallback(async () => {
@@ -112,6 +113,8 @@ export function EarTrainer() {
   // Play the cadence + test stimulus for the current prompt
   async function playPrompt() {
     if (!prompt) return;
+    const ok = await ensureAudio();
+    if (!ok) return;
     setPhase("playing");
     if (prompt.exerciseType === "scale-degree") {
       const ctx = contextFor(prompt.key, prompt.quality);
@@ -166,10 +169,11 @@ export function EarTrainer() {
       <div>
         <h1 className="font-serif text-3xl">Ear trainer</h1>
         <p className="text-[var(--color-muted)] mt-2 max-w-prose">
-          The single most important skill for playing by ear. Each round,
-          you'll hear a key established (a cadence), then a note or chord —
-          identify it. Slow at first; within two weeks of daily practice you'll
-          reliably hear scale degrees 1, 3, 5, then 4, then the rest.
+          Hear a key established (the cadence), then identify the test note or
+          chord by its <em>job in the key</em> — not by interval from the last
+          note. That's how you decode worship melodies and progressions on your
+          guitar. Do 5–10 minutes daily; wire what you hear to the fretboard
+          lab after each round.
         </p>
       </div>
 
@@ -245,7 +249,13 @@ export function EarTrainer() {
               disabled={phase === "playing"}
               className="px-6 py-3 rounded-md bg-[var(--color-accent)] text-white text-lg hover:opacity-90 disabled:opacity-50"
             >
-              {phase === "playing" ? "▶ Playing…" : wasCorrect === null ? "▶ Play round" : "▶ Replay"}
+              {phase === "playing"
+                ? "▶ Playing…"
+                : audioReady
+                  ? wasCorrect === null
+                    ? "▶ Play round"
+                    : "▶ Replay"
+                  : "▶ Enable audio & play"}
             </button>
 
             {/* Answer buttons */}
@@ -301,6 +311,18 @@ export function EarTrainer() {
                       : `${(prompt as ProgressionPrompt).patternName} — ${(prompt as ProgressionPrompt).chordNames.join(" → ")}`}
                   .
                 </span>
+                {prompt.exerciseType === "scale-degree" && (
+                  <div className="text-sm text-[var(--color-muted)] mt-2 font-normal">
+                    In key of {prompt.key}, degree {(prompt as ScaleDegreePrompt).degree} is{" "}
+                    <strong>{(prompt as ScaleDegreePrompt).noteName}</strong>.{" "}
+                    <Link
+                      to={`/app/fretboard?key=${encodeURIComponent(prompt.key)}&mode=scale`}
+                      className="text-[var(--color-accent)] hover:underline"
+                    >
+                      Find it on the fretboard →
+                    </Link>
+                  </div>
+                )}
                 <button
                   onClick={nextRound}
                   className="ml-4 px-4 py-1.5 rounded bg-[var(--color-accent)] text-white text-sm hover:opacity-90"

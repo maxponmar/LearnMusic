@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import type { LessonSummary, LessonProgress, EarTrainingStats, PracticeSession } from "@lag/shared";
+import { suggestedDailyPractice, toolLabel } from "../data/lessonPractice";
 
 const MODULES = [
   { id: "fretboard-landmarks", name: "0 · Fretboard landmarks", goal: "Name any note on the neck" },
@@ -47,7 +48,8 @@ export function AppHome() {
   })();
 
   const completedCount = progress?.filter((p) => p.status === "complete").length ?? 0;
-  const totalMinutes = recentPractice?.reduce((s, p) => s + p.durationSec, 0) ?? 0;
+  const totalPracticeSec = recentPractice?.reduce((s, p) => s + p.durationSec, 0) ?? 0;
+  const dailySteps = suggestedDailyPractice(nextLesson);
 
   return (
     <div className="space-y-10">
@@ -73,7 +75,48 @@ export function AppHome() {
           value={progStats ? `${Math.round(progStats.mastery * 100)}%` : "—"}
           sub={`${progStats?.total ?? 0} reps`}
         />
-        <StatCard label="Practice logged" value={`${Math.round(totalMinutes / 60)}h`} sub={`${recentPractice?.length ?? 0} sessions`} />
+        <StatCard
+          label="Practice logged"
+          value={
+            totalPracticeSec >= 3600
+              ? `${(totalPracticeSec / 3600).toFixed(1)}h`
+              : `${Math.round(totalPracticeSec / 60)}m`
+          }
+          sub={`${recentPractice?.length ?? 0} sessions`}
+        />
+      </section>
+
+      {/* Today's practice loop */}
+      <section className="p-6 rounded-md bg-white/60 border border-[var(--color-accent-soft)]/40 space-y-4">
+        <div>
+          <h2 className="font-serif text-2xl">Today's practice</h2>
+          <p className="text-sm text-[var(--color-muted)] mt-1 max-w-prose">
+            {nextLesson
+              ? `After reading "${nextLesson.title}", do this on your guitar — not just in the app.`
+              : "Keep your ear sharp even between lessons."}
+          </p>
+        </div>
+        <ol className="space-y-2">
+          {dailySteps.map((step, i) => (
+            <li key={step.href}>
+              <Link
+                to={step.href}
+                className="flex items-start gap-3 p-3 rounded-md border border-[var(--color-accent-soft)]/30 bg-white/50 hover:border-[var(--color-accent)] transition"
+              >
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--color-accent-soft)] text-white text-xs font-bold flex items-center justify-center">
+                  {i + 1}
+                </span>
+                <div>
+                  <div className="font-medium">{toolLabel(step.tool)}</div>
+                  <div className="text-sm text-[var(--color-muted)]">{step.label}</div>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ol>
+        <Link to="/app/journal" className="text-sm text-[var(--color-accent)] hover:underline">
+          Log your session when you're done →
+        </Link>
       </section>
 
       {/* Continue where you left off */}

@@ -7,11 +7,14 @@
  */
 
 import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Fretboard, type FretboardMode } from "../components/Fretboard";
 import { AudioEngine } from "../lib/audio";
 import { contextFor, fretNotes, midiToFreq, type PentatonicKind } from "@lag/theory";
 
-const KEYS = ["C", "G", "D", "A", "E", "F", "Bb", "Eb"] as const;
+/** Worship home keys first; extras for transposing practice. */
+const WORSHIP_KEYS = ["G", "D", "C", "A"] as const;
+const EXTRA_KEYS = ["E", "F", "Bb", "Eb"] as const;
 const MODES: { value: FretboardMode; label: string }[] = [
   { value: "scale", label: "Whole scale" },
   { value: "root-only", label: "Roots only" },
@@ -22,10 +25,25 @@ const PENTATONIC_OPTS: { value: PentatonicKind; label: string }[] = [
   { value: "minor", label: "Minor pent." },
 ];
 
+function readParam<T extends string>(params: URLSearchParams, key: string, allowed: readonly T[], fallback: T): T {
+  const raw = params.get(key);
+  return raw && (allowed as readonly string[]).includes(raw) ? (raw as T) : fallback;
+}
+
 export function FretboardLab() {
-  const [tonic, setTonic] = useState<string>("G");
-  const [mode, setMode] = useState<FretboardMode>("scale");
-  const [pentatonic, setPentatonic] = useState<PentatonicKind>("off");
+  const [searchParams] = useSearchParams();
+  const [tonic, setTonic] = useState<string>(() =>
+    readParam(searchParams, "key", [...WORSHIP_KEYS, ...EXTRA_KEYS], "G"),
+  );
+  const [mode, setMode] = useState<FretboardMode>(() =>
+    readParam(searchParams, "mode", ["scale", "root-only"] as const, "scale"),
+  );
+  const [pentatonic, setPentatonic] = useState<PentatonicKind>(() =>
+    readParam(searchParams, "pentatonic", ["off", "major", "minor"] as const, "off"),
+  );
+  const [showExtraKeys, setShowExtraKeys] = useState(() =>
+    EXTRA_KEYS.some((k) => k === searchParams.get("key")),
+  );
   const [audioReady, setAudioReady] = useState(false);
   const [audioLoading, setAudioLoading] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
@@ -57,7 +75,7 @@ export function FretboardLab() {
   }, [tonic]);
 
   async function ensureAudio() {
-    if (audioReady || audioLoading) return;
+    if (audioReady) return;
     setAudioLoading(true);
     setAudioError(null);
     try {
@@ -85,10 +103,10 @@ export function FretboardLab() {
       <div>
         <h1 className="font-serif text-3xl">Fretboard lab</h1>
         <p className="text-[var(--color-muted)] mt-2 max-w-prose">
-          Pick a key and see every scale note light up across the neck. Click
-          any dot to hear it. The brown dots are roots; the soft dots are the
-          rest of the scale. Switch to <strong>pentatonic</strong> overlay to
-          see the 5-note fill vocabulary — the bridge to Module 4.
+          Pick a worship key (G, D, C, A) and see where every scale note lives
+          on your acoustic neck. Click a dot to hear it — then find that note
+          on your guitar. Brown dots are roots; use <strong>roots only</strong>{" "}
+          for the Module 0 note-finding drill.
         </p>
       </div>
 
@@ -100,12 +118,32 @@ export function FretboardLab() {
           onChange={(e) => setTonic(e.target.value)}
           className="px-3 py-1.5 rounded border border-[var(--color-accent-soft)] bg-white text-sm"
         >
-          {KEYS.map((k) => (
-            <option key={k} value={k}>
-              {k} major
-            </option>
-          ))}
+          <optgroup label="Worship keys">
+            {WORSHIP_KEYS.map((k) => (
+              <option key={k} value={k}>
+                {k} major
+              </option>
+            ))}
+          </optgroup>
+          {showExtraKeys && (
+            <optgroup label="More keys">
+              {EXTRA_KEYS.map((k) => (
+                <option key={k} value={k}>
+                  {k} major
+                </option>
+              ))}
+            </optgroup>
+          )}
         </select>
+        {!showExtraKeys && (
+          <button
+            type="button"
+            onClick={() => setShowExtraKeys(true)}
+            className="text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] underline"
+          >
+            More keys…
+          </button>
+        )}
 
         <div className="flex gap-1 ml-2">
           {MODES.map((m) => (
