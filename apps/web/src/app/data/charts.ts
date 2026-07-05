@@ -12,24 +12,9 @@
  * used to lead or teach from — see each chart's `notes` field.
  */
 
-export interface SongSection {
-  name: string;
-  /** One NNS token per bar, e.g. ["1", "4", "1", "5"]. */
-  bars: string[];
-  note?: string;
-}
+import type { SongChartData, SongSection } from "@lag/shared";
 
-export interface SongChartData {
-  slug: string;
-  title: string;
-  artist: string;
-  language: "en" | "es";
-  /** The key this chart's tokens are most naturally sung/thought of in. */
-  defaultKey: string;
-  timeSignature: string;
-  sections: SongSection[];
-  notes?: string;
-}
+export type { SongChartData, SongSection };
 
 const SEED_NOTE =
   "Seed chart — a loop-level starting point, not a verified transcription. " +
@@ -47,6 +32,7 @@ export const SONG_CHARTS: SongChartData[] = [
     language: "en",
     defaultKey: "C",
     timeSignature: "4/4",
+    bpm: 72,
     sections: [
       { name: "Verse", bars: bars("1 4 1 5") },
       { name: "Chorus", bars: bars("1 4 6m 5") },
@@ -60,6 +46,7 @@ export const SONG_CHARTS: SongChartData[] = [
     language: "en",
     defaultKey: "D",
     timeSignature: "4/4",
+    bpm: 68,
     sections: [
       { name: "Verse", bars: bars("1 5 6m 4") },
       { name: "Chorus", bars: bars("1 5 6m 4") },
@@ -74,6 +61,7 @@ export const SONG_CHARTS: SongChartData[] = [
     language: "en",
     defaultKey: "D",
     timeSignature: "4/4",
+    bpm: 74,
     sections: [
       { name: "Verse", bars: bars("6m 5 1 4") },
       { name: "Chorus", bars: bars("1 5 6m 4") },
@@ -87,6 +75,7 @@ export const SONG_CHARTS: SongChartData[] = [
     language: "en",
     defaultKey: "G",
     timeSignature: "4/4",
+    bpm: 72,
     sections: [
       { name: "Verse", bars: bars("1 1 4 4") },
       { name: "Chorus", bars: bars("1 5 6m 4") },
@@ -100,6 +89,7 @@ export const SONG_CHARTS: SongChartData[] = [
     language: "en",
     defaultKey: "G",
     timeSignature: "4/4",
+    bpm: 76,
     sections: [
       { name: "Verse", bars: bars("1 4 6m 5") },
       { name: "Chorus", bars: bars("1 4 6m 5") },
@@ -113,6 +103,7 @@ export const SONG_CHARTS: SongChartData[] = [
     language: "es",
     defaultKey: "D",
     timeSignature: "4/4",
+    bpm: 80,
     sections: [
       { name: "Verse", bars: bars("1 4 5 1") },
       { name: "Chorus", bars: bars("1 4 5 1") },
@@ -126,6 +117,7 @@ export const SONG_CHARTS: SongChartData[] = [
     language: "es",
     defaultKey: "G",
     timeSignature: "4/4",
+    bpm: 78,
     sections: [
       { name: "Verse", bars: bars("1 5 6m 4") },
       { name: "Chorus", bars: bars("6m 4 1 5") },
@@ -139,6 +131,7 @@ export const SONG_CHARTS: SongChartData[] = [
     language: "es",
     defaultKey: "C",
     timeSignature: "4/4",
+    bpm: 72,
     sections: [
       { name: "Verse", bars: bars("1 4 5 1") },
       { name: "Chorus", bars: bars("4 5 1 6m") },

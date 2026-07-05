@@ -188,6 +188,32 @@ export const SkillProgressSchema = z.object({
 export type SkillProgress = z.infer<typeof SkillProgressSchema>;
 
 // ----------------------------------------------------------------------------
+// Song charts (static library — validated when authoring seed data)
+// ----------------------------------------------------------------------------
+
+export const SongSectionSchema = z.object({
+  name: z.string(),
+  /** One NNS token per bar, e.g. ["1", "4", "1", "5"]. */
+  bars: z.array(z.string()),
+  note: z.string().optional(),
+});
+export type SongSection = z.infer<typeof SongSectionSchema>;
+
+export const SongChartSchema = z.object({
+  slug: z.string(),
+  title: z.string(),
+  artist: z.string(),
+  language: z.enum(["en", "es"]),
+  defaultKey: keyName,
+  timeSignature: z.string(),
+  /** Suggested practice tempo (worship ballad/mid-tempo range). */
+  bpm: z.number().int().min(40).max(240).optional(),
+  sections: z.array(SongSectionSchema),
+  notes: z.string().optional(),
+});
+export type SongChartData = z.infer<typeof SongChartSchema>;
+
+// ----------------------------------------------------------------------------
 // Standard API envelope
 // ----------------------------------------------------------------------------
 

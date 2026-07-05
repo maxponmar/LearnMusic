@@ -10,6 +10,13 @@ import type * as Tone from "tone";
 
 export type TimeSignature = 3 | 4;
 
+export const BPM_MIN = 40;
+export const BPM_MAX = 240;
+
+export function clampBpm(bpm: number): number {
+  return Math.max(BPM_MIN, Math.min(BPM_MAX, Math.round(bpm)));
+}
+
 class MetronomeEngineImpl {
   private tone: typeof Tone | null = null;
   private accentSynth: Tone.MembraneSynth | null = null;
@@ -69,7 +76,7 @@ class MetronomeEngineImpl {
   }
 
   setBpm(bpm: number): void {
-    this._bpm = Math.max(40, Math.min(240, Math.round(bpm)));
+    this._bpm = clampBpm(bpm);
     if (this.tone && this._running) {
       this.tone.Transport.bpm.value = this._bpm;
     }

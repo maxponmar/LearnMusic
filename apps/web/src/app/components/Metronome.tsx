@@ -4,12 +4,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { MetronomeEngine, bpmFromTaps, type TimeSignature } from "../lib/metronome";
-
-const BPM_MIN = 40;
-const BPM_MAX = 240;
-const TAP_WINDOW_MS = 2000;
-const MAX_TAPS = 4;
+import { BpmControl } from "./BpmControl";
+import {
+  MetronomeEngine,
+  bpmFromTaps,
+  clampBpm,
+  type TimeSignature,
+} from "../lib/metronome";
 
 export function Metronome() {
   const [searchParams] = useSearchParams();
@@ -17,7 +18,7 @@ export function Metronome() {
     const raw = searchParams.get("bpm");
     if (!raw) return 120;
     const n = Number(raw);
-    return Number.isFinite(n) ? Math.max(BPM_MIN, Math.min(BPM_MAX, Math.round(n))) : 120;
+    return Number.isFinite(n) ? clampBpm(n) : 120;
   })();
   const [bpm, setBpm] = useState(initialBpm);
   const [timeSig, setTimeSig] = useState<TimeSignature>(4);
@@ -44,7 +45,7 @@ export function Metronome() {
   }, []);
 
   const applyBpm = useCallback((next: number) => {
-    const clamped = Math.max(BPM_MIN, Math.min(BPM_MAX, Math.round(next)));
+    const clamped = clampBpm(next);
     setBpm(clamped);
     MetronomeEngine.setBpm(clamped);
   }, []);
@@ -76,8 +77,8 @@ export function Metronome() {
 
   const handleTap = () => {
     const now = Date.now();
-    const recent = [...tapTimes.current, now].filter((t) => now - t <= TAP_WINDOW_MS);
-    tapTimes.current = recent.slice(-MAX_TAPS);
+    const recent = [...tapTimes.current, now].filter((t) => now - t <= 2000);
+    tapTimes.current = recent.slice(-4);
     const detected = bpmFromTaps(tapTimes.current);
     if (detected != null) applyBpm(detected);
   };
@@ -142,40 +143,7 @@ export function Metronome() {
         </p>
       )}
 
-      {/* BPM slider + steppers */}
-      <div className="p-6 rounded-md bg-white/60 border border-[var(--color-accent-soft)]/40 space-y-4">
-        <div className="flex items-center justify-between gap-4">
-          <button
-            type="button"
-            onClick={() => applyBpm(bpm - 1)}
-            className="w-10 h-10 rounded-md border border-[var(--color-accent-soft)]/40 hover:border-[var(--color-accent)] text-lg"
-            aria-label="Decrease BPM"
-          >
-            −
-          </button>
-          <input
-            type="range"
-            min={BPM_MIN}
-            max={BPM_MAX}
-            value={bpm}
-            onChange={(e) => applyBpm(Number(e.target.value))}
-            className="flex-1 accent-[var(--color-accent)]"
-            aria-label="BPM"
-          />
-          <button
-            type="button"
-            onClick={() => applyBpm(bpm + 1)}
-            className="w-10 h-10 rounded-md border border-[var(--color-accent-soft)]/40 hover:border-[var(--color-accent)] text-lg"
-            aria-label="Increase BPM"
-          >
-            +
-          </button>
-        </div>
-        <div className="flex justify-between text-xs text-[var(--color-muted)]">
-          <span>{BPM_MIN}</span>
-          <span>{BPM_MAX}</span>
-        </div>
-      </div>
+      <BpmControl bpm={bpm} onBpmChange={applyBpm} />
 
       {/* Time signature + tap tempo */}
       <div className="flex flex-wrap items-center justify-center gap-3">

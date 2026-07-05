@@ -11,6 +11,7 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ALL_KEYS, chordForToken, suggestCapo } from "@lag/theory";
 import { SONG_CHARTS } from "../data/charts";
+import { SongPracticePanel } from "../components/SongPracticePanel";
 
 type Display = "numbers" | "chords";
 
@@ -75,6 +76,10 @@ export function SongChart() {
           <h1 className="font-serif text-3xl">{chart.title}</h1>
           <p className="text-[var(--color-muted)]">
             {chart.artist} · {chart.timeSignature} · default key {chart.defaultKey}
+            {chart.bpm != null ? ` · ${chart.bpm} BPM` : ""}
+          </p>
+          <p className="text-sm text-[var(--color-muted)] mt-1">
+            {chart.sections.map((s) => s.name).join(" · ")}
           </p>
         </div>
         <button
@@ -132,8 +137,16 @@ export function SongChart() {
 
         <div className="ml-auto text-sm font-mono">
           Capo {capo.fret} · play {capo.shape} shapes
+          {chart.bpm != null ? ` · ${chart.bpm} BPM` : ""}
         </div>
       </div>
+
+      <SongPracticePanel
+        chart={chart}
+        selectedKey={selectedKey}
+        capoFret={capo.fret}
+        capoShape={capo.shape}
+      />
 
       {/* Sections */}
       <div className="space-y-5">

@@ -53,8 +53,9 @@ export function SongsList() {
                         <div className="font-medium">{chart.title}</div>
                         <div className="text-sm text-[var(--color-muted)]">{chart.artist}</div>
                       </div>
-                      <div className="text-xs font-mono text-[var(--color-muted)] whitespace-nowrap">
-                        key {chart.defaultKey}
+                      <div className="text-xs font-mono text-[var(--color-muted)] whitespace-nowrap text-right">
+                        <div>key {chart.defaultKey}</div>
+                        {chart.bpm != null && <div>{chart.bpm} BPM</div>}
                       </div>
                     </div>
                   </Link>
