@@ -112,7 +112,7 @@ export function Fretboard({
   // Filter to visible frets
   const visibleNotes = notes.filter((n) => n.fret >= startFret && n.fret <= startFret + frets);
 
-  const stringY = (s: number) => (6 - s) * STRING_GAP + (compact ? 12 : 20); // string 6 (low E) at bottom
+  const stringY = (s: number) => (s - 1) * STRING_GAP + (compact ? 12 : 20); // string 1 (high E) at top, 6 (low E) at bottom — tab orientation
   const noteX = (fret: number) => {
     // Open notes draw left of the nut; fretted notes draw between frets
     if (fret === 0) return labelWidth / 2 + 2;
@@ -141,7 +141,7 @@ export function Fretboard({
         {/* Fretboard wood background */}
         <rect
           x={labelWidth}
-          y={stringY(6) - STRING_GAP / 2}
+          y={stringY(1) - STRING_GAP / 2}
           width={availableWidth}
           height={STRING_GAP * (numStrings - 1) + STRING_GAP}
           fill="#e8d5b8"
@@ -152,7 +152,7 @@ export function Fretboard({
         {startFret === 0 && (
           <rect
             x={labelWidth - NUT_WIDTH / 2}
-            y={stringY(6) - STRING_GAP / 2}
+            y={stringY(1) - STRING_GAP / 2}
             width={NUT_WIDTH}
             height={STRING_GAP * (numStrings - 1) + STRING_GAP}
             fill="#3a2d20"
@@ -167,9 +167,9 @@ export function Fretboard({
             <line
               key={`fret-${f}`}
               x1={x}
-              y1={stringY(6) - STRING_GAP / 2}
+              y1={stringY(1) - STRING_GAP / 2}
               x2={x}
-              y2={stringY(1) + STRING_GAP / 2}
+              y2={stringY(6) + STRING_GAP / 2}
               stroke="#9a8970"
               strokeWidth={FRET_WIDTH}
             />

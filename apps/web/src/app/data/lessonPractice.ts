@@ -6,7 +6,7 @@
 
 import type { LessonSummary } from "@lag/shared";
 
-export type PracticeTool = "fretboard" | "ear" | "songs" | "journal";
+export type PracticeTool = "fretboard" | "ear" | "songs" | "journal" | "metronome";
 
 export interface PracticeStep {
   tool: PracticeTool;
@@ -109,15 +109,43 @@ const LESSON_STEPS: Record<string, PracticeStep[]> = {
   "0001-name-any-note": [
     {
       tool: "fretboard",
-      label: "Root-only mode in G — find every G without counting from open E",
+      label: "Click every G on the embedded fretboard, then find each on your guitar",
       href: "/app/fretboard?key=G&mode=root-only",
       minutes: 5,
     },
     {
       tool: "journal",
-      label: "On your guitar: name low E & A strings frets 0–7 out loud, then log it",
+      label: "Name low E & A strings frets 0–7 out loud, then log it",
       href: "/app/journal?minutes=15",
       minutes: 15,
+    },
+  ],
+  "0002-intervals": [
+    {
+      tool: "fretboard",
+      label: "C major scale — click two dots and hear the interval between them",
+      href: "/app/fretboard?key=C&mode=scale",
+      minutes: 5,
+    },
+    {
+      tool: "ear",
+      label: "Scale-degree trainer — hear home (1) vs bright (3) vs stable (5)",
+      href: "/app/ear-training?mode=scale-degree",
+      minutes: 10,
+    },
+  ],
+  "0003-major-scale": [
+    {
+      tool: "fretboard",
+      label: "G major scale — click up the neck while singing do-re-mi",
+      href: "/app/fretboard?key=G&mode=scale",
+      minutes: 5,
+    },
+    {
+      tool: "ear",
+      label: "10 rounds identifying scale degrees 1, 3, and 5",
+      href: "/app/ear-training?mode=scale-degree",
+      minutes: 10,
     },
   ],
   "0004-scale-degrees": [
@@ -134,7 +162,27 @@ const LESSON_STEPS: Record<string, PracticeStep[]> = {
       minutes: 5,
     },
   ],
+  "0005-diatonic-triads": [
+    {
+      tool: "fretboard",
+      label: "G major scale — click each diatonic note, then play the matching triad",
+      href: "/app/fretboard?key=G&mode=scale",
+      minutes: 5,
+    },
+    {
+      tool: "ear",
+      label: "Chord quality drill — major vs minor vs diminished",
+      href: "/app/ear-training?mode=chord-quality",
+      minutes: 10,
+    },
+  ],
   "0006-nashville-number-system": [
+    {
+      tool: "fretboard",
+      label: "Root-only in G — hear where 1, 4, 5, and 6- live on the neck",
+      href: "/app/fretboard?key=G&mode=root-only",
+      minutes: 5,
+    },
     {
       tool: "songs",
       label: "Open a chart in Numbers view — read 1-5-6-4, not G-D-Em-C",
@@ -156,6 +204,12 @@ const LESSON_STEPS: Record<string, PracticeStep[]> = {
       minutes: 10,
     },
     {
+      tool: "fretboard",
+      label: "G major roots — click 1, 4, 5, 6 while hearing a 1-5-6-4 loop",
+      href: "/app/fretboard?key=G&mode=root-only",
+      minutes: 5,
+    },
+    {
       tool: "songs",
       label: "Chart a chorus by ear, then compare to the seed chart",
       href: "/app/songs",
@@ -169,12 +223,86 @@ const LESSON_STEPS: Record<string, PracticeStep[]> = {
       href: "/app/fretboard?key=G&mode=scale&pentatonic=major",
       minutes: 10,
     },
+    {
+      tool: "journal",
+      label: "Play G maj pent and E min pent — same dots, different root — then log it",
+      href: "/app/journal",
+      minutes: 5,
+    },
+  ],
+  "0009-caged": [
+    {
+      tool: "fretboard",
+      label: "Position 1 (open) and Position 2 (fret 3) — click every dot in each",
+      href: "/app/fretboard?key=G&mode=scale&pentatonic=major",
+      minutes: 10,
+    },
+    {
+      tool: "journal",
+      label: "Log which CAGED shape you drilled and where the root sits",
+      href: "/app/journal",
+      minutes: 5,
+    },
+  ],
+  "0010-pentatonic-over-progressions": [
+    {
+      tool: "fretboard",
+      label: "Stay-home vs follow-the-chord — G, D, and E min pentatonic overlays",
+      href: "/app/fretboard?key=G&mode=scale&pentatonic=major",
+      minutes: 10,
+    },
+    {
+      tool: "songs",
+      label: "Loop a I-V-vi-IV chart and try one fill per chord change",
+      href: "/app/songs",
+      minutes: 15,
+    },
+  ],
+  "0011-motifs": [
+    {
+      tool: "metronome",
+      label: "Set 60 BPM — clap or strum quarter notes, accent on beat 1",
+      href: "/app/metronome?bpm=60",
+      minutes: 5,
+    },
+    {
+      tool: "fretboard",
+      label: "G-A-B motif on Position 2 pentatonic — click each note before you play it",
+      href: "/app/fretboard?key=G&mode=scale&pentatonic=major",
+      minutes: 10,
+    },
+    {
+      tool: "journal",
+      label: "Log one motif you state → repeat → vary over G-D-Em-C",
+      href: "/app/journal",
+      minutes: 5,
+    },
+  ],
+  "0012-space-and-dynamics": [
+    {
+      tool: "fretboard",
+      label: "One soft note per chord change — click a chord tone, play it once, stop",
+      href: "/app/fretboard?key=G&mode=scale&pentatonic=major",
+      minutes: 10,
+    },
+    {
+      tool: "journal",
+      label: "Log where you left silence in a chorus you know",
+      href: "/app/journal",
+      minutes: 5,
+    },
   ],
   "0013-capo-strategy": [
     {
       tool: "fretboard",
       label: "Capo-2 position in G — pentatonic shape you already know",
       href: "/app/fretboard?key=G&mode=scale&pentatonic=major",
+      minutes: 10,
+    },
+    {
+      tool: "ear",
+      label: "Progression drill — find the key before choosing a capo fret",
+      href: "/app/ear-training?mode=progression",
       minutes: 10,
     },
     {
@@ -191,6 +319,7 @@ const TOOL_LABEL: Record<PracticeTool, string> = {
   ear: "Ear trainer",
   songs: "Song charts",
   journal: "Practice journal",
+  metronome: "Metronome",
 };
 
 export function practiceStepsFor(lesson: Pick<LessonSummary, "id" | "moduleId">): PracticeStep[] {
@@ -206,6 +335,12 @@ export function suggestedDailyPractice(
 ): PracticeStep[] {
   if (nextLesson) return practiceStepsFor(nextLesson);
   return [
+    {
+      tool: "metronome",
+      label: "Warm up with 2 minutes at a comfortable tempo",
+      href: "/app/metronome",
+      minutes: 2,
+    },
     {
       tool: "ear",
       label: "5 minutes of scale-degree ear training",

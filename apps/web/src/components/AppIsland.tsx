@@ -21,6 +21,7 @@ import { SongChart } from "../app/routes/SongChart";
 import { Journal } from "../app/routes/Journal";
 import { FretboardLab } from "../app/routes/FretboardLab";
 import { EarTrainer } from "../app/routes/EarTrainer";
+import { MetronomePage } from "../app/routes/Metronome";
 
 export default function AppIsland() {
   return (
@@ -35,6 +36,7 @@ export default function AppIsland() {
           <Route path="/app/ear-training" element={<EarTrainer />} />
           <Route path="/app/journal" element={<Journal />} />
           <Route path="/app/fretboard" element={<FretboardLab />} />
+          <Route path="/app/metronome" element={<MetronomePage />} />
           <Route path="*" element={<Navigate to="/app" replace />} />
         </Route>
       </Routes>

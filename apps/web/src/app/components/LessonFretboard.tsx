@@ -22,9 +22,19 @@ import { createRoot } from "react-dom/client";
 import { useNavigate } from "react-router-dom";
 import { Fretboard, type FretboardMode } from "./Fretboard";
 import { AudioEngine } from "../lib/audio";
-import type { FretNote } from "@lag/theory";
+import { OPEN_MIDI, OPEN_STRING_NAMES, type FretNote } from "@lag/theory";
 import type { PentatonicKind } from "@lag/theory";
 import type { ScaleQuality } from "@lag/theory";
+
+/** Standard tuning labels — high E (string 1) through low E (string 6). */
+const OPEN_STRING_LABELS: Record<number, string> = {
+  1: "high E",
+  2: "B",
+  3: "G",
+  4: "D",
+  5: "A",
+  6: "low E",
+};
 
 interface FretboardPlaceholder {
   element: HTMLElement;
@@ -61,6 +71,40 @@ async function ensureAudioOnce() {
   }
 }
 
+function OpenStringsWidget() {
+  const strings = [6, 5, 4, 3, 2, 1] as const;
+  return (
+    <div className="my-4">
+      <div className="open-strings-widget">
+        {strings.map((s) => (
+          <button
+            key={s}
+            type="button"
+            onClick={async () => {
+              await ensureAudioOnce();
+              AudioEngine.playNote(OPEN_MIDI[s]!, 1.2);
+            }}
+          >
+            {OPEN_STRING_LABELS[s]} — {OPEN_STRING_NAMES[s - 1]}
+          </button>
+        ))}
+        <button
+          type="button"
+          onClick={async () => {
+            await ensureAudioOnce();
+            AudioEngine.playNotes([40, 45, 50, 55, 59, 64], 1.5);
+          }}
+        >
+          All open strings
+        </button>
+      </div>
+      <p className="text-xs text-[var(--color-muted)] mt-1">
+        Click to hear each open string (low E at bottom, high E at top — same as the fretboard).
+      </p>
+    </div>
+  );
+}
+
 export function LessonContent({ html }: { html: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -83,8 +127,9 @@ export function LessonContent({ html }: { html: string }) {
       linkCleanups.push(() => anchor.removeEventListener("click", onClick));
     });
 
-    // 1. discover embedded fretboard placeholders
+    // 1. discover embedded widgets
     const placeholders = discoverPlaceholders(container);
+    const openStringEls = container.querySelectorAll<HTMLElement>("[data-open-strings]");
 
     // 2. render a live Fretboard into each placeholder
     const roots: Array<{ root: ReturnType<typeof createRoot> }> = [];
@@ -116,6 +161,13 @@ export function LessonContent({ html }: { html: string }) {
           </p>
         </div>,
       );
+    }
+
+    for (const el of openStringEls) {
+      el.innerHTML = "";
+      const root = createRoot(el);
+      roots.push({ root });
+      root.render(<OpenStringsWidget />);
     }
 
     return () => {

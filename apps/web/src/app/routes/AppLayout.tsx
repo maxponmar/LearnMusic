@@ -10,6 +10,7 @@ const navItems = [
   { to: "/app/lessons", label: "Lessons" },
   { to: "/app/songs", label: "Songs" },
   { to: "/app/ear-training", label: "Ear" },
+  { to: "/app/metronome", label: "Metronome" },
   { to: "/app/fretboard", label: "Fretboard" },
   { to: "/app/journal", label: "Journal" },
 ];
